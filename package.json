@@ -1,0 +1,14 @@
+{
+  "name": "self-healing-rag-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-Healing RAG Agent - Enterprise Knowledge & Adaptive Retrieval System",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint",
+    "test": "npm --prefix frontend run test",
+    "preview": "npm --prefix frontend run preview",
+    "install:frontend": "npm --prefix frontend install"
+  }
+}

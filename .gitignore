@@ -1,0 +1,59 @@
+# Environment and Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# Python
+backend/.venv/
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# Node / Frontend
+frontend/node_modules/
+node_modules/
+frontend/dist/
+dist/
+.eslintcache
+*.tsbuildinfo
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Docker & Database local data volumes
+docker/data/
+pgdata/
+redisdata/
+*.db
+*.sqlite3
+
+# Local storage and user uploaded documents
+data/
+backend/data/
+storage/
+artifacts/scratch/
+*.webp
+
+# Logs
+*.log
+logs/

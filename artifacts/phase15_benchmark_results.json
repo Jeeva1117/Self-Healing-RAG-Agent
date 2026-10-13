@@ -1,0 +1,378 @@
+{
+  "benchmark_metadata": {
+    "phase": "Phase 15 \u2014 End-to-End Evaluation, RAG Benchmarking & Load Testing",
+    "timestamp": "2026-10-11 05:47:39 UTC",
+    "environment": "Local Development (PostgreSQL 16, Python 3.13)",
+    "embedding_model": "BAAI/bge-small-en-v1.5 (FastEmbed, 384 dimensions)",
+    "reranker_model": "ms-marco-TinyBERT-L-2-v2 (FlashRank)",
+    "synthesis_provider": "GroundedSynthesisProvider",
+    "total_duration_seconds": 209.01
+  },
+  "retrieval_stages": {
+    "Vector-Only (FastEmbed)": {
+      "precision_at_1": 0.8,
+      "precision_at_3": 0.3333,
+      "precision_at_5": 0.2,
+      "recall_at_1": 0.8,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 0.9,
+      "ndcg_at_3": 0.9262,
+      "ndcg_at_5": 0.9262,
+      "hit_rate_at_5": 1.0,
+      "avg_latency_ms": 381.46
+    },
+    "Lexical-Only (BM25)": {
+      "precision_at_1": 0.6,
+      "precision_at_3": 0.2667,
+      "precision_at_5": 0.2,
+      "recall_at_1": 0.6,
+      "recall_at_3": 0.8,
+      "recall_at_5": 1.0,
+      "mrr": 0.7067,
+      "ndcg_at_3": 0.7,
+      "ndcg_at_5": 0.7774,
+      "hit_rate_at_5": 1.0,
+      "avg_latency_ms": 331.83
+    },
+    "Hybrid RRF (Vector + BM25)": {
+      "precision_at_1": 0.8,
+      "precision_at_3": 0.3333,
+      "precision_at_5": 0.2,
+      "recall_at_1": 0.8,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 0.9,
+      "ndcg_at_3": 0.9262,
+      "ndcg_at_5": 0.9262,
+      "hit_rate_at_5": 1.0,
+      "avg_latency_ms": 296.67
+    },
+    "Hybrid + Neural Reranker (FlashRank)": {
+      "precision_at_1": 1.0,
+      "precision_at_3": 0.3333,
+      "precision_at_5": 0.2,
+      "recall_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_3": 1.0,
+      "ndcg_at_5": 1.0,
+      "hit_rate_at_5": 1.0,
+      "avg_latency_ms": 544.74
+    }
+  },
+  "end_to_end_evaluation": {
+    "summary": {
+      "total_cases": 16,
+      "passed_cases": 10,
+      "failed_cases": 6,
+      "skipped_cases": 0,
+      "pass_rate": 0.625,
+      "mean_precision_at_k": {},
+      "mean_recall_at_k": {},
+      "mean_mrr": null,
+      "mean_ndcg_at_k": {},
+      "empty_retrieval_rate": 0.3125,
+      "mean_groundedness": 0.8713,
+      "mean_fact_coverage": 0.9167,
+      "citation_validity_rate": 0.8125,
+      "claim_support_rate": 0.8713,
+      "insufficient_evidence_accuracy": 0.5,
+      "recovery_attempt_rate": 0.25,
+      "recovery_success_rate": 0.0,
+      "budget_exhaustion_rate": 0.0,
+      "mean_total_latency_ms": 4175.98
+    },
+    "test_cases": [
+      {
+        "test_case_id": "TC15-01-FACTUAL",
+        "category": "answerable",
+        "passed": true,
+        "status": "passed",
+        "failure_reasons": [],
+        "query": "What are Python arithmetic and comparison operators?",
+        "groundedness": 0.86,
+        "fact_coverage": 1.0,
+        "citation_validity": 1.0,
+        "latency_ms": 1212.5618001446128
+      },
+      {
+        "test_case_id": "TC15-02-EXACT-KW",
+        "category": "precise_topic",
+        "passed": true,
+        "status": "passed",
+        "failure_reasons": [],
+        "query": "How are lambda functions defined in Python?",
+        "groundedness": 0.7857,
+        "fact_coverage": 0.6667,
+        "citation_validity": 1.0,
+        "latency_ms": 2353.413499891758
+      },
+      {
+        "test_case_id": "TC15-03-PARAPHRASE",
+        "category": "precise_topic",
+        "passed": false,
+        "status": "failed",
+        "failure_reasons": [
+          "Key facts coverage 33.3% below 50% threshold."
+        ],
+        "query": "Explain the syntax used for declaring procedures with arguments and return output in Python.",
+        "groundedness": 0.7073,
+        "fact_coverage": 0.3333,
+        "citation_validity": 1.0,
+        "latency_ms": 2060.012600151822
+      },
+      {
+        "test_case_id": "TC15-04-MULTI-CHUNK",
+        "category": "multi_chunk",
+        "passed": true,
+        "status": "passed",
+        "failure_reasons": [],
+        "query": "Summarize Python operators and how functions are defined with parameters.",
+        "groundedness": 0.8269,
+        "fact_coverage": 1.0,
+        "citation_validity": 1.0,
+        "latency_ms": 2279.1957000736147
+      },
+      {
+        "test_case_id": "TC15-05-MULTI-DOC",
+        "category": "multi_document",
+        "passed": false,
+        "status": "failed",
+        "failure_reasons": [
+          "Citation validity 0.0% below 100% (0/2 valid)."
+        ],
+        "query": "Summarize programming operators and how structured blocks function in Python.",
+        "groundedness": 0.803,
+        "fact_coverage": 1.0,
+        "citation_validity": 0.0,
+        "latency_ms": 2478.158700047061
+      },
+      {
+        "test_case_id": "TC15-06-TECHNICAL",
+        "category": "numerical_technical",
+        "passed": true,
+        "status": "passed",
+        "failure_reasons": [],
+        "query": "What are the specific arithmetic operators +, -, *, and / in Python?",
+        "groundedness": 0.84,
+        "fact_coverage": 1.0,
+        "citation_validity": 1.0,
+        "latency_ms": 2895.8702001255006
+      },
+      {
+        "test_case_id": "TC15-07-AMBIGUOUS",
+        "category": "ambiguous",
+        "passed": true,
+        "status": "passed",
+        "failure_reasons": [],
+        "query": "Tell me about that thing.",
+        "groundedness": 1.0,
+        "fact_coverage": 1.0,
+        "citation_validity": 1.0,
+        "latency_ms": 4818.296600133181
+      },
+      {
+        "test_case_id": "TC15-08-ABSENT",
+        "category": "insufficient_evidence",
+        "passed": false,
+        "status": "failed",
+        "failure_reasons": [
+          "Expected truthful insufficient-evidence response but received regular answer.",
+          "Answer cited 1 chunks when evidence was expected to be absent."
+        ],
+        "query": "What is the international maritime shipping insurance clause 42?",
+        "groundedness": 0.6129,
+        "fact_coverage": 1.0,
+        "citation_validity": 1.0,
+        "latency_ms": 3545.888400170952
+      },
+      {
+        "test_case_id": "TC15-09-UNANSWERABLE",
+        "category": "unanswerable",
+        "passed": true,
+        "status": "passed",
+        "failure_reasons": [],
+        "query": "What is the warp drive hyperspace navigation protocol?",
+        "groundedness": 1.0,
+        "fact_coverage": 1.0,
+        "citation_validity": 1.0,
+        "latency_ms": 8001.47489993833
+      },
+      {
+        "test_case_id": "TC15-10-MISLEADING",
+        "category": "misleading_premise",
+        "passed": false,
+        "status": "failed",
+        "failure_reasons": [
+          "Answer marked as insufficient evidence when valid evidence was expected.",
+          "No supporting citations provided for answerable query.",
+          "Key facts coverage 0.0% below 50% threshold."
+        ],
+        "query": "Since Python has no function definitions or operators, how do scripts calculate sums?",
+        "groundedness": 1.0,
+        "fact_coverage": 0.0,
+        "citation_validity": 1.0,
+        "latency_ms": 4924.294299911708
+      },
+      {
+        "test_case_id": "TC15-11-CONTRADICTORY",
+        "category": "contradictory",
+        "passed": false,
+        "status": "failed",
+        "failure_reasons": [
+          "Answer marked as insufficient evidence when valid evidence was expected.",
+          "No supporting citations provided for answerable query.",
+          "Key facts coverage 0.0% below 50% threshold."
+        ],
+        "query": "What is the conflicting guidance regarding deprecation policies?",
+        "groundedness": 1.0,
+        "fact_coverage": 0.0,
+        "citation_validity": 1.0,
+        "latency_ms": 7634.360899915919
+      },
+      {
+        "test_case_id": "TC15-12-MALFORMED",
+        "category": "malformed_input",
+        "passed": true,
+        "status": "passed",
+        "failure_reasons": [],
+        "query": "Python operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators operators ???!!!!",
+        "groundedness": 0.9195,
+        "fact_coverage": 1.0,
+        "citation_validity": 1.0,
+        "latency_ms": 5353.0137001071125
+      },
+      {
+        "test_case_id": "TC15-13-PERMISSION",
+        "category": "permission_boundary",
+        "passed": false,
+        "status": "failed",
+        "failure_reasons": [
+          "Unauthorized knowledge base was accessible instead of being rejected."
+        ],
+        "query": "What confidential data is in unauthorized KB?",
+        "groundedness": 0.0,
+        "fact_coverage": 0.0,
+        "citation_validity": 0.0,
+        "latency_ms": 4999.281900003552
+      },
+      {
+        "test_case_id": "TC15-14-RECOVERABLE",
+        "category": "recoverable_failure",
+        "passed": true,
+        "status": "passed",
+        "failure_reasons": [],
+        "query": "Could you please explain Python operators in detail?",
+        "groundedness": 0.8431,
+        "fact_coverage": 1.0,
+        "citation_validity": 1.0,
+        "latency_ms": 5396.251100115478
+      },
+      {
+        "test_case_id": "TC15-15-NON-RECOVERABLE",
+        "category": "non_recoverable_failure",
+        "passed": true,
+        "status": "passed",
+        "failure_reasons": [],
+        "query": "Show protected settings.",
+        "groundedness": 0.0,
+        "fact_coverage": 0.0,
+        "citation_validity": 0.0,
+        "latency_ms": 0.001700129359960556
+      },
+      {
+        "test_case_id": "TC15-16-IRRELEVANT",
+        "category": "irrelevant_retrieval",
+        "passed": true,
+        "status": "passed",
+        "failure_reasons": [],
+        "query": "How do I bake chocolate chip cookies at home?",
+        "groundedness": 1.0,
+        "fact_coverage": 1.0,
+        "citation_validity": 1.0,
+        "latency_ms": 8863.672900013626
+      }
+    ]
+  },
+  "concurrency_and_load": {
+    "concurrency_1": {
+      "concurrency": 1,
+      "total_requests": 10,
+      "successful_requests": 10,
+      "failed_requests": 0,
+      "total_duration_s": 17.572,
+      "throughput_rps": 0.57,
+      "p50_latency_ms": 1763.68,
+      "p95_latency_ms": 1995.96,
+      "p99_latency_ms": 1995.96,
+      "min_latency_ms": 1614.36,
+      "max_latency_ms": 1995.96,
+      "avg_latency_ms": 1756.17
+    },
+    "concurrency_5": {
+      "concurrency": 5,
+      "total_requests": 10,
+      "successful_requests": 10,
+      "failed_requests": 0,
+      "total_duration_s": 13.656,
+      "throughput_rps": 0.73,
+      "p50_latency_ms": 6278.18,
+      "p95_latency_ms": 7168.9,
+      "p99_latency_ms": 7168.9,
+      "min_latency_ms": 6158.71,
+      "max_latency_ms": 7168.9,
+      "avg_latency_ms": 6540.21
+    },
+    "concurrency_10": {
+      "concurrency": 10,
+      "total_requests": 20,
+      "successful_requests": 20,
+      "failed_requests": 0,
+      "total_duration_s": 29.486,
+      "throughput_rps": 0.68,
+      "p50_latency_ms": 14260.11,
+      "p95_latency_ms": 15669.78,
+      "p99_latency_ms": 15669.78,
+      "min_latency_ms": 12525.79,
+      "max_latency_ms": 15669.78,
+      "avg_latency_ms": 14123.11
+    },
+    "concurrency_25": {
+      "concurrency": 25,
+      "total_requests": 50,
+      "successful_requests": 50,
+      "failed_requests": 0,
+      "total_duration_s": 66.508,
+      "throughput_rps": 0.75,
+      "p50_latency_ms": 30174.45,
+      "p95_latency_ms": 41916.6,
+      "p99_latency_ms": 42146.9,
+      "min_latency_ms": 21972.72,
+      "max_latency_ms": 42146.9,
+      "avg_latency_ms": 30812.1
+    }
+  },
+  "resilience_and_security": {
+    "cross_tenant_isolation": {
+      "passed": true,
+      "details": "HTTP 404/403 enforced on unauthorized KB"
+    },
+    "honest_abstention": {
+      "passed": true,
+      "details": "is_insufficient_evidence=True, citations=0"
+    },
+    "input_normalization": {
+      "passed": true,
+      "details": "Answered with 3 valid citations"
+    },
+    "citation_integrity": {
+      "passed": true,
+      "citation_validity": 1.0,
+      "valid_citations": 2,
+      "total_citations": 2,
+      "groundedness_score": 0.8541666666666666
+    }
+  }
+}

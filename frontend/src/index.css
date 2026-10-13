@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Base Surfaces (Default Blue + White SaaS Theme) */
+    --background: 210 40% 98%;           /* #F8FAFC */
+    --background-secondary: 0 0% 100%;   /* #FFFFFF */
+    --surface: 0 0% 100%;                /* #FFFFFF */
+    --surface-hover: 214 32% 97%;
+    --surface-active: 214 32% 93%;
+
+    /* Foreground / Text */
+    --foreground: 222 47% 11%;           /* #0F172A Primary Text */
+    --foreground-secondary: 215 16% 47%; /* #64748B Secondary Text */
+    --foreground-muted: 215 16% 62%;
+
+    /* Borders & Dividers */
+    --border: 214 32% 91%;              /* #E2E8F0 */
+    --border-subtle: 214 32% 95%;
+    --border-strong: 214 32% 82%;
+
+    /* Primary Blue (#2563EB) */
+    --primary: 221 83% 53%;             /* #2563EB */
+    --primary-hover: 221 83% 45%;       /* #1D4ED8 */
+    --primary-foreground: 0 0% 100%;    /* #FFFFFF */
+    --primary-subtle: 214 100% 97%;     /* #EFF6FF Light Blue */
+    --primary-soft: 214 95% 93%;        /* #DBEAFE Soft Blue */
+
+    /* Dark Navy Sidebar */
+    --navy: 222 47% 11%;                /* #0F172A */
+    --navy-surface: 222 47% 14%;
+    --navy-border: 217 33% 20%;
+
+    /* Secondary / Neutral */
+    --secondary: 214 32% 95%;
+    --secondary-hover: 214 32% 90%;
+    --secondary-foreground: 222 47% 11%;
+
+    /* Semantic States */
+    --success: 142 71% 45%;             /* #16A34A */
+    --success-subtle: 142 71% 45% / 0.12;
+    --success-foreground: 142 76% 30%;
+
+    --warning: 38 92% 50%;
+    --warning-subtle: 38 92% 50% / 0.14;
+    --warning-foreground: 38 90% 25%;
+
+    --destructive: 0 84% 60%;
+    --destructive-subtle: 0 84% 60% / 0.14;
+    --destructive-foreground: 0 84% 30%;
+
+    --info: 221 83% 53%;
+    --info-subtle: 214 100% 97%;
+    --info-foreground: 221 83% 45%;
+
+    --radius: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+  }
+
+  .dark {
+    /* Dark Mode Alternate Palette */
+    --background: 222 47% 7%;
+    --background-secondary: 222 47% 10%;
+    --surface: 222 47% 11%;
+    --surface-hover: 222 47% 15%;
+    --surface-active: 222 47% 18%;
+
+    --foreground: 210 40% 98%;
+    --foreground-secondary: 215 20% 70%;
+    --foreground-muted: 215 16% 50%;
+
+    --border: 217 33% 18%;
+    --border-subtle: 217 33% 13%;
+    --border-strong: 217 33% 25%;
+
+    --primary: 221 83% 58%;
+    --primary-hover: 221 83% 50%;
+    --primary-foreground: 0 0% 100%;
+    --primary-subtle: 221 83% 58% / 0.15;
+    --primary-soft: 221 83% 58% / 0.25;
+
+    --navy: 222 47% 9%;
+    --navy-surface: 222 47% 12%;
+    --navy-border: 217 33% 17%;
+
+    --secondary: 217 33% 16%;
+    --secondary-hover: 217 33% 20%;
+    --secondary-foreground: 210 40% 98%;
+
+    --success: 142 71% 45%;
+    --success-subtle: 142 71% 45% / 0.18;
+    --success-foreground: 142 80% 85%;
+
+    --destructive: 0 84% 60%;
+    --destructive-subtle: 0 84% 60% / 0.18;
+    --destructive-foreground: 0 84% 90%;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
+  color: #0f172a;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dark body {
+  background-color: #0b0f19;
+  color: #f1f5f9;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+/* Code block typography */
+pre, code, kbd {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Animation utilities */
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer-mask {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-mask::after {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.05) 20%,
+    rgba(255, 255, 255, 0.1) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 2s infinite;
+  content: '';
+}
+
+.light .shimmer-mask::after {
+  background-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0.03) 20%,
+    rgba(0, 0, 0, 0.06) 60%,
+    rgba(0, 0, 0, 0)
+  );
+}
