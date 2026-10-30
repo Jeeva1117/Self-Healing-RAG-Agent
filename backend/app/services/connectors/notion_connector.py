@@ -48,7 +48,11 @@ class NotionConnector(BaseConnector):
         content_lines: list[str] = []
         for block in blocks:
             b_type = block.get("type")
-            b_data = block.get(b_type, {})
+            if not isinstance(b_type, str):
+                continue
+            b_data = block.get(b_type)
+            if not isinstance(b_data, dict):
+                b_data = {}
             rich_text = b_data.get("rich_text", [])
             text = _extract_rich_text(rich_text)
 

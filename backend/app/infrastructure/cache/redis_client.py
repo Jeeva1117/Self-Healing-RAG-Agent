@@ -57,7 +57,10 @@ class RedisService:
         """Retrieves a string value by key."""
         try:
             client = await self.get_client()
-            return await client.get(key)
+            val = await client.get(key)
+            if isinstance(val, bytes):
+                return val.decode("utf-8")
+            return val
         except Exception as e:
             logger.error(f"Redis get error for key '{key}': {str(e)}")
             return None
