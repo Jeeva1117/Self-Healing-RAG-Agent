@@ -222,3 +222,41 @@ async def test_document_download_flow(
     assert res_dl.status_code == 200
     assert res_dl.content == original_bytes
     assert 'attachment; filename="report.txt"' in res_dl.headers.get("content-disposition", "")
+
+
+def test_chunker_numbered_section_detection():
+    """Verifies DocumentChunker correctly splits numbered sections without regex failures."""
+    from app.services.chunker import DocumentChunker
+    from app.services.parsers.base import ParsedDocument, ParsedUnit
+
+    doc = ParsedDocument(
+        units=[
+            ParsedUnit(
+                text=(
+                    "1. Introduction to Algorithms\n"
+                    "This section discusses the fundamental design of sorting and graph algorithms in detail.\n"
+                    "We explore both computational complexity and cache locality tradeoffs across systems.\n\n"
+                    "2. Dynamic Programming Paradigms\n"
+                    "Dynamic programming breaks down problems into overlapping subproblems and optimal substructures.\n"
+                    "Memoization tables store intermediate solutions for linear speedup.\n"
+                ),
+                page_number=1,
+                section_title="Computer Science Foundations",
+                unit_index=0,
+            )
+        ],
+        raw_metadata={"filename": "algorithms.txt"},
+    )
+
+    chunker = DocumentChunker(chunk_size=100, chunk_overlap=20)
+    chunks = chunker.chunk_document(
+        parsed_doc=doc,
+        document_id="doc-123",
+        document_version_id="ver-123",
+        source_filename="algorithms.txt",
+    )
+
+    assert len(chunks) >= 2
+    assert any("Introduction to Algorithms" in c.section_title or "Introduction" in c.content for c in chunks)
+    assert any("Dynamic Programming" in c.section_title or "Dynamic" in c.content for c in chunks)
+

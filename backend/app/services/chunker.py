@@ -151,6 +151,7 @@ class DocumentChunker:
             # Bullet check: lines starting with bullet characters are list items, not top-level section headers
             is_bullet = stripped.startswith(("\x7f", "•", "-", "*"))
             is_num = False
+            matched_sec_num: int | None = None
             if not is_bullet:
                 m = re.match(r"^(\d+)[\.\)]\s+[A-Za-z]", stripped)
                 if m and not stripped.endswith((".", ";", "?", "!")):
@@ -159,6 +160,7 @@ class DocumentChunker:
                     # Sub-lists restarting from 1 (e.g. stages 1..7 inside section 33) stay within the parent section
                     if current_sec_num is None or num > current_sec_num:
                         is_num = True
+                        matched_sec_num = num
 
             is_md = is_markdown and self._is_markdown_heading(line)
             content_str = "\n".join(current_lines).strip()
@@ -177,10 +179,7 @@ class DocumentChunker:
 
                 current_title = stripped.lstrip("#").strip()
                 in_numbered_section = is_num
-                if is_num:
-                    current_sec_num = int(re.match(r"^(\d+)[\.\)]\s+", stripped).group(1))
-                else:
-                    current_sec_num = None
+                current_sec_num = matched_sec_num if is_num else None
                 saw_first_heading = True
                 current_lines.append(line)
             else:
