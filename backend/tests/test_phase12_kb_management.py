@@ -772,3 +772,14 @@ async def test_coverage_engine_handles_list_retrieval_scores_regression(
     assert body["data"]["total_queries_analyzed"] == 3
     assert body["data"]["insufficient_evidence_rate"] == round(1 / 3, 4)
 
+
+@pytest.mark.asyncio
+async def test_kb_repair_engine_chunker_initialization(db_session: AsyncSession):
+    """Verifies KnowledgeBaseRepairEngine initializes DocumentChunker properly without AttributeError."""
+    from app.services.chunker import DocumentChunker
+
+    repair_engine = KnowledgeBaseRepairEngine(session=db_session)
+    assert hasattr(repair_engine, "chunker")
+    assert isinstance(repair_engine.chunker, DocumentChunker)
+    assert repair_engine.chunker.chunk_char_size is not None
+

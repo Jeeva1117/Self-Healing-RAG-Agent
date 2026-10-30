@@ -24,6 +24,7 @@ from app.repositories.document_repository import DocumentRepository
 from app.repositories.knowledge_base_repository import KnowledgeBaseRepository
 from app.repositories.repair_job_repository import RepairJobRepository
 from app.schemas.knowledge_base import RepairJobResponse
+from app.services.chunker import DocumentChunker
 from app.services.knowledge_base.health import KnowledgeBaseHealthEngine
 from app.services.knowledge_base.versioning import KnowledgeBaseVersioningEngine
 from app.services.normalizer import TextNormalizer
@@ -48,6 +49,7 @@ class KnowledgeBaseRepairEngine:
         session: AsyncSession,
         storage_provider: ObjectStorageInterface | None = None,
         embedding_provider: EmbeddingProviderInterface | None = None,
+        chunker: DocumentChunker | None = None,
     ):
         self.session = session
         self.doc_repo = DocumentRepository(session)
@@ -60,6 +62,7 @@ class KnowledgeBaseRepairEngine:
         )
         self.storage = storage_provider or LocalStorageProvider()
         self.embeddings = embedding_provider or get_embedding_provider()
+        self.chunker = chunker or DocumentChunker()
 
     async def execute_repair(
         self,
