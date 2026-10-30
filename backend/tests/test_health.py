@@ -23,7 +23,7 @@ async def test_liveness_endpoint(client: AsyncClient):
     assert data["status"] == "alive"
     assert data["service"] == "self-healing-rag-agent"
     assert "uptime_seconds" in data
-    assert isinstance(data["uptime_seconds"], (int, float))
+    assert isinstance(data["uptime_seconds"], int | float)
 
 
 @pytest.mark.asyncio

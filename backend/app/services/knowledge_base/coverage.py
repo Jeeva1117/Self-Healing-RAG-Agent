@@ -25,7 +25,7 @@ def _extract_top_score(retrieval_scores: object) -> float | None:
         return None
     if isinstance(retrieval_scores, dict):
         val = retrieval_scores.get("top_score")
-        if isinstance(val, (int, float)):
+        if isinstance(val, int | float):
             return float(val)
         return None
     if isinstance(retrieval_scores, list):
@@ -38,9 +38,9 @@ def _extract_top_score(retrieval_scores: object) -> float | None:
                     or item.get("vector_score")
                     or item.get("score")
                 )
-                if isinstance(score, (int, float)):
+                if isinstance(score, int | float):
                     scores.append(float(score))
-            elif isinstance(item, (int, float)):
+            elif isinstance(item, int | float):
                 scores.append(float(item))
         return max(scores) if scores else None
     return None

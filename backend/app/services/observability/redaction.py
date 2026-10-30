@@ -35,7 +35,7 @@ def redact_sensitive_data(data: Any) -> Any:
         for k, v in data.items():
             if SENSITIVE_KEY_PATTERNS.search(str(k)):
                 sanitized[k] = "[REDACTED]"
-            elif isinstance(v, (dict, list)):
+            elif isinstance(v, dict | list):
                 sanitized[k] = redact_sensitive_data(v)
             else:
                 sanitized[k] = redact_sensitive_value(str(k), v)

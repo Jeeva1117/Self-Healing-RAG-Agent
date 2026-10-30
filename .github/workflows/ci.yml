@@ -29,11 +29,12 @@ jobs:
 
       - name: Lint with Ruff
         run: |
-          ruff check backend/app backend/tests
+          ruff check backend/app backend/tests --config pyproject.toml
 
       - name: Run Pytest test suite
         env:
           JWT_SECRET: ci-test-secret-key-32-chars-long-minimum!
+          JWT_ALGORITHM: HS256
           ALGORITHM: HS256
           DEMO_LOGIN_ENABLED: "true"
           EMBEDDING_PROVIDER: "fastembed"

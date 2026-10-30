@@ -48,7 +48,7 @@ class PDFParser(DocumentParser):
             }
             if reader.metadata:
                 for k, v in reader.metadata.items():
-                    if isinstance(v, (str, int, float, bool)):
+                    if isinstance(v, str | int | float | bool):
                         # Strip leading slashes from PDF keys like /Title -> Title
                         clean_key = k.lstrip("/").lower()
                         raw_metadata[clean_key] = v

@@ -48,7 +48,7 @@ class JSONParser(DocumentParser):
                         if isinstance(item, dict):
                             record_lines = [f"Record #{idx}:"]
                             for k, v in item.items():
-                                val_str = json.dumps(v, ensure_ascii=False) if isinstance(v, (dict, list)) else str(v)
+                                val_str = json.dumps(v, ensure_ascii=False) if isinstance(v, dict | list) else str(v)
                                 record_lines.append(f"  {k}: {val_str}")
                             batch_texts.append("\n".join(record_lines))
                         else:
@@ -89,7 +89,7 @@ class JSONParser(DocumentParser):
                             for idx, sub_item in enumerate(batch, start=i + 1):
                                 batch_lines.append(f"Item #{idx}:")
                                 for sk, sv in sub_item.items():
-                                    val_str = json.dumps(sv, ensure_ascii=False) if isinstance(sv, (dict, list)) else str(sv)
+                                    val_str = json.dumps(sv, ensure_ascii=False) if isinstance(sv, dict | list) else str(sv)
                                     batch_lines.append(f"  {sk}: {val_str}")
                             units.append(
                                 ParsedUnit(
@@ -101,7 +101,7 @@ class JSONParser(DocumentParser):
                             )
                             unit_index += 1
                     else:
-                        val_str = json.dumps(val, ensure_ascii=False) if isinstance(val, (dict, list)) else str(val)
+                        val_str = json.dumps(val, ensure_ascii=False) if isinstance(val, dict | list) else str(val)
                         scalar_lines.append(f"{key}: {val_str}")
 
                 if scalar_lines:
