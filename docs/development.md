@@ -58,23 +58,28 @@ docker compose up -d
 ## 3. Running Automated Tests
 
 ```powershell
-# Run both backend tests & frontend production typecheck
+# Run both backend tests & frontend production typecheck (321 total tests)
 .\scripts\run_tests.ps1
 
-# Backend only (pytest)
+# Backend only (pytest: 275 tests passed, 1 skipped)
 backend\.venv\Scripts\pytest -o pythonpath=backend backend\tests
 
-# Frontend typecheck & build
+# Frontend unit tests (Vitest: 46 tests passed)
+cd frontend && npm run test
+
+# Frontend production typecheck & optimized chunk build
 cd frontend && npm run build
 ```
 
 ## 4. Code Formatting & Linting
 
 ```powershell
-# Backend (Ruff)
-backend\.venv\Scripts\ruff check backend\app backend\tests
+# Backend linting & syntax check (Ruff)
+backend\.venv\Scripts\ruff check backend\app backend\tests --config pyproject.toml
+
+# Backend auto-formatting
 backend\.venv\Scripts\ruff format backend\app backend\tests
 
-# Frontend
-cd frontend && npm run build
+# Frontend linting (Oxlint)
+cd frontend && npx oxlint
 ```

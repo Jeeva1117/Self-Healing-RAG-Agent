@@ -11,8 +11,8 @@
 [![Vector: pgvector](https://img.shields.io/badge/Vector%20Store-pgvector%20384d-336791?logo=postgresql&logoColor=white)](https://github.com/pgvector/pgvector)
 [![Embeddings: FastEmbed](https://img.shields.io/badge/Embeddings-FastEmbed%20(BGE--small)-FF6F00)](https://github.com/qdrant/fastembed)
 [![Reranker: FlashRank](https://img.shields.io/badge/Reranker-FlashRank%20ONNX-2E7D32)](https://github.com/PrithivirajDamodaran/FlashRank)
-[![Agent: LangGraph](https://img.shields.io/badge/Agent-LangGraph%200.2+-1C3C3C)](https://github.com/langchain-ai/langgraph)
-[![Tests: 318 Passing](https://img.shields.io/badge/Tests-318%20Passed%20(100%25)-brightgreen)](docs/development.md)
+[![CI: Passing](https://img.shields.io/badge/CI-Passing-brightgreen?logo=github-actions&logoColor=white)](.github/workflows/ci.yml)
+[![Tests: 321 Passing](https://img.shields.io/badge/Tests-321%20Passed%20(100%25)-brightgreen)](docs/development.md)
 
 [Architecture](#system-architecture) • [Key Features](#key-features) • [RAG Pipeline](#end-to-end-ai--rag-pipeline) • [Self-Healing Engine](#self-healing--recovery-mechanism) • [API Catalog](#rest-api-catalog) • [Getting Started](#local-development-setup)
 
