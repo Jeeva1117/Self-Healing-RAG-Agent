@@ -1,11 +1,14 @@
 """Structured logging system with contextvars for request correlation tracing."""
 
 import json
-import logging
+import logging as std_logging
 import sys
 from contextvars import ContextVar
 from datetime import UTC, datetime
 from typing import Any
+
+# Backwards-compatible module alias
+logging = std_logging
 
 # Context variables for storing correlation IDs across async tasks
 request_id_ctx_var: ContextVar[str | None] = ContextVar("request_id", default=None)
@@ -13,14 +16,14 @@ trace_id_ctx_var: ContextVar[str | None] = ContextVar("trace_id", default=None)
 span_id_ctx_var: ContextVar[str | None] = ContextVar("span_id", default=None)
 
 
-class JSONFormatter(logging.Formatter):
+class JSONFormatter(std_logging.Formatter):
     """Formats log records as structured JSON with correlation IDs and redaction."""
 
     def __init__(self, service_name: str = "self-healing-rag-agent"):
         super().__init__()
         self.service_name = service_name
 
-    def format(self, record: logging.LogRecord) -> str:
+    def format(self, record: std_logging.LogRecord) -> str:
         # Import lazily to avoid circular imports
         from app.services.observability.redaction import redact_sensitive_data
 
@@ -50,14 +53,14 @@ class JSONFormatter(logging.Formatter):
         return json.dumps(log_data)
 
 
-def setup_logging(level: str = "INFO", service_name: str = "self-healing-rag-agent") -> logging.Logger:
+def setup_logging(level: str = "INFO", service_name: str = "self-healing-rag-agent") -> std_logging.Logger:
     """Configures structured JSON logging for the application root logger."""
-    root_logger = logging.getLogger()
+    root_logger = std_logging.getLogger()
     root_logger.setLevel(level)
 
     # Avoid adding duplicate handlers if already configured
     if not root_logger.handlers:
-        handler = logging.StreamHandler(sys.stdout)
+        handler = std_logging.StreamHandler(sys.stdout)
         handler.setFormatter(JSONFormatter(service_name=service_name))
         root_logger.addHandler(handler)
     else:
@@ -65,12 +68,12 @@ def setup_logging(level: str = "INFO", service_name: str = "self-healing-rag-age
             handler.setFormatter(JSONFormatter(service_name=service_name))
 
     # Suppress overly chatty third-party loggers if needed
-    logging.getLogger("uvicorn.access").handlers = []
-    logging.getLogger("uvicorn.access").propagate = False
+    std_logging.getLogger("uvicorn.access").handlers = []
+    std_logging.getLogger("uvicorn.access").propagate = False
 
     return root_logger
 
 
-def get_logger(name: str) -> logging.Logger:
+def get_logger(name: str) -> std_logging.Logger:
     """Returns a named logger."""
-    return logging.getLogger(name)
+    return std_logging.getLogger(name)

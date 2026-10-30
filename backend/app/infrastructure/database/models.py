@@ -40,7 +40,8 @@ class ResilientVector(Vector):
                 return None
             if isinstance(value, list):
                 return [float(x) for x in value]
-            return base_proc(value)
+            res = base_proc(value)
+            return [float(x) for x in res] if res is not None else None
 
         return process
 

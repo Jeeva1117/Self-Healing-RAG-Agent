@@ -65,8 +65,8 @@ class AnswerVerifier:
             if ch is None:
                 return ""
             if isinstance(ch, dict):
-                return ch.get("content", "")
-            return getattr(ch, "content", "")
+                return str(ch.get("content", ""))
+            return str(getattr(ch, "content", ""))
 
         cited_indices = {int(idx) for idx in citation_tags if 1 <= int(idx) <= num_chunks}
         cited_contents = [_get_chunk_text(retrieved_chunks[i - 1]).lower() for i in cited_indices]

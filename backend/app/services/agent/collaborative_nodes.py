@@ -595,9 +595,9 @@ class CollaborativeAgentNodes:
             status = ChatResponseStatus.INSUFFICIENT_EVIDENCE
             supervisor_decision = "terminated_insufficient"
             ans_text = state.get("sanitized_answer") or INSUFFICIENT_EVIDENCE_SENTENCE
-            citations = []
-            sources = []
-            claim_citations = []
+            citations: list[Any] = []
+            sources: list[Any] = []
+            claim_citations: list[Any] = []
         else:
             raw_status = state.get("execution_status")
             status = raw_status if raw_status is not None else ChatResponseStatus.ANSWERED

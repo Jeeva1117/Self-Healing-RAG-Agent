@@ -63,7 +63,7 @@ class DOCXParser(DocumentParser):
                 for row in table.rows:
                     cell_texts = [cell.text.strip().replace("\n", " ") for cell in row.cells]
                     # Filter out duplicate merged cell values in adjacent positions
-                    deduped = []
+                    deduped: list[str] = []
                     for c in cell_texts:
                         if not deduped or c != deduped[-1]:
                             deduped.append(c)
