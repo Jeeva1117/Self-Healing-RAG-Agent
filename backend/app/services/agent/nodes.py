@@ -6,8 +6,6 @@ import time
 from datetime import UTC, datetime
 from typing import Any
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.config import settings
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
@@ -41,6 +39,7 @@ from app.services.recovery import (
     RecoveryPolicy,
 )
 from app.services.retrieval.retrieval_service import RetrievalService
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 

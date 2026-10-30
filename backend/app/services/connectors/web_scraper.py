@@ -8,7 +8,6 @@ from typing import Any
 from urllib.parse import urldefrag, urljoin, urlparse
 
 import httpx
-
 from app.core.logging import get_logger
 from app.services.connectors.base import (
     BaseConnector,

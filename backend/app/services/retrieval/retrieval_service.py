@@ -3,8 +3,6 @@
 import time
 from uuid import UUID
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.config import settings
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
@@ -24,6 +22,7 @@ from app.schemas.retrieval import (
 from app.services.retrieval.bm25_retriever import BM25Retriever
 from app.services.retrieval.reciprocal_rank_fusion import ReciprocalRankFusion
 from app.services.retrieval.vector_retriever import VectorRetriever
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 

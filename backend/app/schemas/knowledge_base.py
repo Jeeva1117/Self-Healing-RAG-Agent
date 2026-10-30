@@ -3,9 +3,8 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, Field
-
 from app.infrastructure.database.models import KnowledgeBaseStatus
+from pydantic import BaseModel, Field
 
 
 class KnowledgeBaseCreate(BaseModel):

@@ -5,8 +5,6 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
 from app.domain.interfaces.embeddings import EmbeddingProviderInterface
@@ -29,6 +27,7 @@ from app.services.knowledge_base.health import KnowledgeBaseHealthEngine
 from app.services.knowledge_base.versioning import KnowledgeBaseVersioningEngine
 from app.services.normalizer import TextNormalizer
 from app.services.parsers.factory import ParserFactory
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger("app.services.kb.repair")
 

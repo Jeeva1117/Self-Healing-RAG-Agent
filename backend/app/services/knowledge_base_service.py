@@ -2,8 +2,6 @@
 
 from uuid import UUID
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
 from app.domain.interfaces.storage import ObjectStorageInterface
@@ -17,6 +15,7 @@ from app.schemas.knowledge_base import (
     KnowledgeBaseResponse,
     KnowledgeBaseUpdate,
 )
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 

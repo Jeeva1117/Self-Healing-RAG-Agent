@@ -3,9 +3,6 @@
 import uuid
 
 import pytest
-from httpx import AsyncClient
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.domain.interfaces.llm import LLMMessage, LLMProviderInterface, LLMResponse
 from app.infrastructure.database.models import (
     Document,
@@ -30,6 +27,8 @@ from app.services.agent.collaborative_graph import (
 from app.services.agent.collaborative_nodes import CollaborativeAgentNodes
 from app.services.agent.state import MultiAgentRAGState
 from app.services.retrieval.retrieval_service import RetrievalService
+from httpx import AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class MockCollaborativeLLM(LLMProviderInterface):

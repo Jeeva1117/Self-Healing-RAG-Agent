@@ -14,11 +14,10 @@ Tests cover:
 """
 
 import pytest
-from httpx import AsyncClient
-from pydantic import BaseModel
-
 from app.infrastructure.database.models import DataSourceType
 from app.schemas.common import ApiResponse, MetaInfo
+from httpx import AsyncClient
+from pydantic import BaseModel
 
 # ==============================================================================
 # 1. Exact MetaInfo.total Regression Tests

@@ -2,15 +2,14 @@
 
 from datetime import UTC, datetime
 
-from fastapi import APIRouter, Depends, Query, Request
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.api.deps import require_admin
 from app.infrastructure.database.models import User
 from app.infrastructure.database.session import get_db_session
 from app.repositories.user_repository import UserRepository
 from app.schemas.auth import AdminUserListResponse, UserResponse
 from app.schemas.common import ApiResponse, MetaInfo
+from fastapi import APIRouter, Depends, Query, Request
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/admin", tags=["Admin Operations"])
 

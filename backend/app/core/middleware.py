@@ -3,11 +3,10 @@
 import time
 import uuid
 
+from app.core.logging import get_logger, request_id_ctx_var, trace_id_ctx_var
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import Response
-
-from app.core.logging import get_logger, request_id_ctx_var, trace_id_ctx_var
 
 logger = get_logger("app.middleware")
 

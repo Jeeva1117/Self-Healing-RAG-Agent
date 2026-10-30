@@ -5,14 +5,13 @@ from typing import Any
 from uuid import UUID
 
 import numpy as np
-from sqlalchemy import or_, select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
 from app.domain.interfaces.embeddings import EmbeddingProviderInterface
 from app.infrastructure.database.models import Document, DocumentChunk, DocumentStatus, DocumentVersion
 from app.schemas.retrieval import RetrievalResultItem
+from sqlalchemy import or_, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 

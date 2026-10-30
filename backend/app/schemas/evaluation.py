@@ -3,10 +3,9 @@
 import uuid
 from typing import Any
 
-from pydantic import BaseModel, Field
-
 from app.services.evaluation.dataset import DEFAULT_DATASET_NAME, DEFAULT_DATASET_VERSION
 from app.services.evaluation.models import BaselineComparison, CaseEvaluationResult
+from pydantic import BaseModel, Field
 
 
 class TriggerEvaluationRequest(BaseModel):

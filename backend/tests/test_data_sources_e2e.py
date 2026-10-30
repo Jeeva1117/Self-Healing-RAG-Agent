@@ -7,10 +7,6 @@ from uuid import UUID
 
 import docx
 import pytest
-from httpx import AsyncClient
-from pypdf import PdfWriter
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.infrastructure.database.models import DocumentStatus
 from app.infrastructure.embedding.mock_provider import MockEmbeddingProvider
 from app.schemas.retrieval import RetrievalMode, RetrievalRequest
@@ -23,6 +19,9 @@ from app.services.parsers.factory import ParserFactory
 from app.services.parsers.pdf_parser import PDFParser
 from app.services.parsers.xlsx_parser import XLSXParser
 from app.services.retrieval.retrieval_service import RetrievalService
+from httpx import AsyncClient
+from pypdf import PdfWriter
+from sqlalchemy.ext.asyncio import AsyncSession
 
 # ==============================================================================
 # Helper Generators for Multi-Format Documents

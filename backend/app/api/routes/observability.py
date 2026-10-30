@@ -3,9 +3,6 @@
 from datetime import UTC, datetime
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.api.deps import require_authenticated_user
 from app.core.logging import get_logger
 from app.infrastructure.database.models import User, UserRole
@@ -20,6 +17,8 @@ from app.services.observability.schemas import (
     TraceRecord,
 )
 from app.services.observability.service import ObservabilityService
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger("app.api.observability")
 

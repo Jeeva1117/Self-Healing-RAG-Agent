@@ -20,8 +20,6 @@ from unittest.mock import AsyncMock, patch
 
 import httpx
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.exceptions import AppError
 from app.domain.interfaces.llm import LLMMessage, LLMResponse
 from app.infrastructure.database.models import (
@@ -35,6 +33,7 @@ from app.infrastructure.database.models import (
 from app.infrastructure.llm.groq_provider import GroqProvider, redact_secret
 from app.schemas.chat import ChatRequest, ChatResponseStatus
 from app.services.agent.graph import AgenticRAGOrchestrator
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class MockGroqProvider(GroqProvider):

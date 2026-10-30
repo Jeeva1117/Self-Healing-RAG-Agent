@@ -5,9 +5,8 @@ from datetime import UTC, datetime, timedelta
 
 import jwt
 import pytest
-from httpx import AsyncClient
-
 from app.core.config import settings
+from httpx import AsyncClient
 
 
 @pytest.mark.asyncio

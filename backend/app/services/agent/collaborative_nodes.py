@@ -16,8 +16,6 @@ import uuid
 from typing import Any
 from uuid import UUID
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.logging import get_logger
 from app.core.prompts import GROUNDED_SYSTEM_PROMPT, INSUFFICIENT_EVIDENCE_SENTENCE
 from app.domain.interfaces.llm import LLMMessage, LLMProviderInterface
@@ -42,6 +40,7 @@ from app.schemas.retrieval import RetrievalMode, RetrievalRequest, RetrievalResu
 from app.services.agent.state import MultiAgentRAGState
 from app.services.observability.tracer import Tracer
 from app.services.retrieval.retrieval_service import RetrievalService
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 

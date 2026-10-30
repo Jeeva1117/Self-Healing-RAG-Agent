@@ -2,13 +2,12 @@
 
 from typing import Any
 
+from app.core.config import settings
+from app.core.logging import get_logger
 from fastapi import Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
-
-from app.core.config import settings
-from app.core.logging import get_logger
 
 logger = get_logger("app.errors")
 

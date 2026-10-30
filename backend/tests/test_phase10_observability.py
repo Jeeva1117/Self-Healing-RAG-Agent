@@ -4,8 +4,6 @@ import time
 import uuid
 
 import pytest
-from httpx import ASGITransport, AsyncClient
-
 from app.core.logging import JSONFormatter
 from app.main import app
 from app.services.observability.alerting import AlertRule, AlertSeverity
@@ -20,6 +18,7 @@ from app.services.observability.schemas import (
 from app.services.observability.service import ObservabilityService
 from app.services.observability.taxonomy import ErrorClassifier
 from app.services.observability.tracer import Tracer
+from httpx import ASGITransport, AsyncClient
 
 
 # ==============================================================================

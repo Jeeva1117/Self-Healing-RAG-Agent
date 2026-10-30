@@ -2,11 +2,10 @@
 
 import asyncio
 
-from fastembed import TextEmbedding
-
 from app.core.config import settings
 from app.core.logging import get_logger
 from app.domain.interfaces.embeddings import EmbeddingProviderInterface
+from fastembed import TextEmbedding
 
 logger = get_logger(__name__)
 

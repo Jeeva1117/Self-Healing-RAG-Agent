@@ -3,9 +3,6 @@
 from collections import Counter
 from uuid import UUID
 
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
 from app.infrastructure.database.models import (
@@ -15,6 +12,8 @@ from app.infrastructure.database.models import (
 )
 from app.repositories.knowledge_base_repository import KnowledgeBaseRepository
 from app.schemas.knowledge_base import CoverageGapItem, CoverageReport
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger("app.services.kb.coverage")
 

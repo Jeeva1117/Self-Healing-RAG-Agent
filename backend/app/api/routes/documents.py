@@ -4,16 +4,6 @@ from datetime import UTC, datetime
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import (
-    APIRouter,
-    BackgroundTasks,
-    Depends,
-    Query,
-    Request,
-    Response,
-)
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.api.deps import require_authenticated_user
 from app.core.logging import get_logger
 from app.infrastructure.database.models import User
@@ -25,6 +15,15 @@ from app.schemas.document import (
     ReprocessResponse,
 )
 from app.services.ingestion_service import IngestionService
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    Query,
+    Request,
+    Response,
+)
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 router = APIRouter(prefix="/documents", tags=["Document Lifecycle"])

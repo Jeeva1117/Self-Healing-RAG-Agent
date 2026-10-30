@@ -3,7 +3,6 @@
 import uuid
 
 import pytest
-
 from app.domain.interfaces.llm import LLMMessage
 from app.infrastructure.llm.grounded_synthesis_provider import (
     INSUFFICIENT_EVIDENCE_MESSAGE,
@@ -238,16 +237,9 @@ async def test_reranker_relevance_for_operator_queries():
         "print('py' in 'python') # True"
     )
 
-    cond_content = (
-        "5. Conditional Statements\n"
-        " marks = 78\n"
-        "if marks >= 90:\n"
-        "    grade = 'A'\n"
-        "else:\n"
-        "    grade = 'B'"
-    )
+    cond_content = "5. Conditional Statements\n marks = 78\nif marks >= 90:\n    grade = 'A'\nelse:\n    grade = 'B'"
 
-    type_content = "Type conversion\n" " number_text = '42'\n" "number = int(number_text)\n" "print(number + 8)"
+    type_content = "Type conversion\n number_text = '42'\nnumber = int(number_text)\nprint(number + 8)"
 
     docs = [
         {
@@ -296,7 +288,7 @@ async def test_reranker_relevance_for_function_queries():
         "Parameters, default arguments, and return values"
     )
 
-    op_content = "4. Operators\n" "Arithmetic\n" " a, b = 10, 3\n" "print(a + b)"
+    op_content = "4. Operators\nArithmetic\n a, b = 10, 3\nprint(a + b)"
 
     docs = [
         {
@@ -326,7 +318,7 @@ async def test_reranker_relevance_for_unrelated_queries():
     reranker = FlashRankReranker()
     query = "Explain quantum entanglement in interstellar deep space wormholes"
 
-    op_content = "4. Operators\n" "Arithmetic\n" " a, b = 10, 3\n" "print(a + b)"
+    op_content = "4. Operators\nArithmetic\n a, b = 10, 3\nprint(a + b)"
 
     docs = [
         {

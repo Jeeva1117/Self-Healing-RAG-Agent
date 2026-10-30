@@ -3,11 +3,10 @@
 from collections.abc import Sequence
 from datetime import UTC, datetime
 
-from sqlalchemy import func, select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.infrastructure.database.models import User, UserRole
 from app.repositories.base import BaseRepository
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class UserRepository(BaseRepository[User]):

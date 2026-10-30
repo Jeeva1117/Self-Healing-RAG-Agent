@@ -4,10 +4,6 @@ import time
 import uuid
 from uuid import UUID
 
-from langgraph.graph import END, START, StateGraph
-from langgraph.graph.state import CompiledStateGraph
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.config import settings
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
@@ -24,6 +20,9 @@ from app.services.agent.state import MultiAgentRAGState
 from app.services.observability.service import ObservabilityService
 from app.services.observability.tracer import Tracer
 from app.services.retrieval.retrieval_service import RetrievalService
+from langgraph.graph import END, START, StateGraph
+from langgraph.graph.state import CompiledStateGraph
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 

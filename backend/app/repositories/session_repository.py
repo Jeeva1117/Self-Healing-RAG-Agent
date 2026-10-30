@@ -4,11 +4,10 @@ import uuid
 from collections.abc import Sequence
 from datetime import UTC, datetime
 
-from sqlalchemy import select, update
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.infrastructure.database.models import UserSession
 from app.repositories.base import BaseRepository
+from sqlalchemy import select, update
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class SessionRepository(BaseRepository[UserSession]):

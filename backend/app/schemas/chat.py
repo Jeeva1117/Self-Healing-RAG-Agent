@@ -5,10 +5,9 @@ from enum import StrEnum
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, Field, field_validator, model_validator
-
 from app.schemas.collaboration import CollaborationMeta
 from app.schemas.retrieval import RetrievalLatencyBreakdown, RetrievalMode
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class ChatResponseStatus(StrEnum):

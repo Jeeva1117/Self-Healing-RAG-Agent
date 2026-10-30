@@ -3,9 +3,6 @@
 import uuid
 
 import pytest
-from httpx import AsyncClient
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.infrastructure.database.models import (
     Document,
     DocumentChunk,
@@ -14,6 +11,8 @@ from app.infrastructure.database.models import (
     KnowledgeBase,
     User,
 )
+from httpx import AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @pytest.fixture

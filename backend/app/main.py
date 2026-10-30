@@ -4,11 +4,6 @@ import time
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError
-from fastapi.middleware.cors import CORSMiddleware
-from starlette.exceptions import HTTPException as StarletteHTTPException
-
 from app.api.router import api_v1_router
 from app.core.config import settings
 from app.core.errors import (
@@ -21,6 +16,10 @@ from app.core.errors import (
 from app.core.logging import get_logger, setup_logging
 from app.core.middleware import RequestIdMiddleware, SecurityHeadersMiddleware
 from app.infrastructure.cache.redis_client import redis_service
+from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 # Initialize root structured logging
 setup_logging(level=settings.LOG_LEVEL, service_name=settings.APP_NAME)

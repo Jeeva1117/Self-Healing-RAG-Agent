@@ -1,9 +1,8 @@
 """Health check API endpoints."""
 
-from fastapi import APIRouter, Depends, Request
-
 from app.schemas.health import HealthResponse, LivenessResponse, ReadinessResponse
 from app.services.health_service import HealthService
+from fastapi import APIRouter, Depends, Request
 
 router = APIRouter(prefix="/health", tags=["Health"])
 

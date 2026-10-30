@@ -3,9 +3,6 @@
 from datetime import UTC, datetime
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Request
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.api.deps import require_authenticated_user
 from app.core.logging import get_logger
 from app.infrastructure.database.models import User
@@ -13,6 +10,8 @@ from app.infrastructure.database.session import get_db_session
 from app.schemas.common import ApiResponse, MetaInfo
 from app.schemas.retrieval import ComparisonResponse, RetrievalRequest, RetrievalResponse
 from app.services.retrieval.retrieval_service import RetrievalService
+from fastapi import APIRouter, Depends, Request
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 

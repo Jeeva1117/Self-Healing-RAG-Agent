@@ -4,10 +4,9 @@ import time
 from typing import Any
 
 import redis.asyncio as aioredis
-from redis.asyncio.client import Redis
-
 from app.core.config import settings
 from app.core.logging import get_logger
+from redis.asyncio.client import Redis
 
 logger = get_logger("app.infrastructure.cache")
 

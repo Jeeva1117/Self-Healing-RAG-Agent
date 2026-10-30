@@ -20,11 +20,10 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any
 
+from app.infrastructure.database.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Index, Integer, String, Text, Uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.infrastructure.database.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 
 
 class ResilientVector(Vector):

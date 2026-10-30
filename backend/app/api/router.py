@@ -1,7 +1,5 @@
 """Central API v1 router aggregator."""
 
-from fastapi import APIRouter
-
 from app.api.routes.admin import router as admin_router
 from app.api.routes.agents import router as agents_router
 from app.api.routes.auth import router as auth_router
@@ -15,6 +13,7 @@ from app.api.routes.observability import router as observability_router
 from app.api.routes.retrieval import router as retrieval_router
 from app.api.routes.retrieval import search_alias_router
 from app.api.routes.system import router as system_router
+from fastapi import APIRouter
 
 api_v1_router = APIRouter()
 

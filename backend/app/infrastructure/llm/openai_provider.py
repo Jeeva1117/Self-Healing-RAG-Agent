@@ -5,7 +5,6 @@ from collections.abc import AsyncIterator
 from typing import Any
 
 import httpx
-
 from app.core.config import settings
 from app.core.logging import get_logger
 from app.domain.interfaces.llm import LLMMessage, LLMProviderInterface, LLMResponse

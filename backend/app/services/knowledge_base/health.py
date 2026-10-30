@@ -4,9 +4,6 @@ import math
 from datetime import UTC, datetime, timedelta
 from uuid import UUID
 
-from sqlalchemy import func, select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.config import settings
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
@@ -22,6 +19,8 @@ from app.schemas.knowledge_base import (
     HealthFinding,
     KnowledgeBaseHealthReport,
 )
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger("app.services.kb.health")
 

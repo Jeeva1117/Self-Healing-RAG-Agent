@@ -7,7 +7,6 @@ from collections.abc import AsyncIterator
 from typing import Any
 
 import httpx
-
 from app.core.config import settings
 from app.core.exceptions import AppError
 from app.core.logging import get_logger

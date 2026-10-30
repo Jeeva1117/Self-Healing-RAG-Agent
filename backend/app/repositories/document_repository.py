@@ -2,15 +2,14 @@
 
 from uuid import UUID
 
-from sqlalchemy import delete, func, select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.infrastructure.database.models import (
     Document,
     DocumentChunk,
     DocumentVersion,
 )
 from app.repositories.base import BaseRepository
+from sqlalchemy import delete, func, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def _as_uuid(val: UUID | str) -> UUID:

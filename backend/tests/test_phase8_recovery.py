@@ -24,8 +24,6 @@ import time
 import uuid
 
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.exceptions import AppError
 from app.domain.interfaces.llm import LLMMessage, LLMProviderInterface, LLMResponse
 from app.infrastructure.database.models import (
@@ -47,6 +45,7 @@ from app.services.recovery import (
     RecoveryAction,
     RecoveryPolicy,
 )
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class PredictableMockLLM(LLMProviderInterface):

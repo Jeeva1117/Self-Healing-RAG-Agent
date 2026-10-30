@@ -5,10 +5,6 @@ from datetime import UTC, datetime
 from unittest.mock import AsyncMock, patch
 
 import pytest
-from httpx import AsyncClient
-from pydantic import ValidationError as PydanticValidationError
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.config import Settings
 from app.core.errors import ValidationError
 from app.infrastructure.database.models import User
@@ -16,6 +12,9 @@ from app.infrastructure.storage.local_storage import LocalStorageProvider
 from app.services.ingestion_service import IngestionService
 from app.services.observability.schemas import TraceRecord
 from app.services.observability.service import ObservabilityService
+from httpx import AsyncClient
+from pydantic import ValidationError as PydanticValidationError
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def test_production_config_rejects_insecure_jwt_secret():

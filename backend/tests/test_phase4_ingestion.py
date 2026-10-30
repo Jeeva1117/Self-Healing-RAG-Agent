@@ -5,13 +5,12 @@ from unittest.mock import AsyncMock, patch
 from uuid import UUID, uuid4
 
 import pytest
-from httpx import AsyncClient
-from pypdf import PdfWriter
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.infrastructure.database.models import User
 from app.services.ingestion_service import IngestionService
 from app.services.parsers.pdf_parser import PDFParser
+from httpx import AsyncClient
+from pypdf import PdfWriter
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def create_text_pdf(text: str = "This is a valid test PDF document content.") -> bytes:

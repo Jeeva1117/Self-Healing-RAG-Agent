@@ -2,11 +2,10 @@
 
 from uuid import UUID
 
-from sqlalchemy import func, select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.infrastructure.database.models import DataSource
 from app.repositories.base import BaseRepository
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def _as_uuid(val: UUID | str) -> UUID:

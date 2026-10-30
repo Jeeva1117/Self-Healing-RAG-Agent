@@ -4,18 +4,6 @@ from datetime import UTC, datetime
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import (
-    APIRouter,
-    BackgroundTasks,
-    Depends,
-    File,
-    Query,
-    Request,
-    UploadFile,
-    status,
-)
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.api.deps import require_authenticated_user
 from app.core.config import settings
 from app.core.exceptions import AppError
@@ -52,6 +40,17 @@ from app.services.knowledge_base import (
 )
 from app.services.knowledge_base_service import KnowledgeBaseService
 from app.services.retrieval.retrieval_service import RetrievalService
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    File,
+    Query,
+    Request,
+    UploadFile,
+    status,
+)
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 router = APIRouter(prefix="/knowledge-bases", tags=["Knowledge Base Management"])

@@ -3,14 +3,13 @@
 import uuid
 from collections.abc import Callable
 
-from fastapi import Depends, Header, Request
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.errors import ForbiddenError, UnauthorizedError
 from app.core.security import verify_access_token
 from app.infrastructure.database.models import User, UserRole
 from app.infrastructure.database.session import get_db_session
 from app.repositories.user_repository import UserRepository
+from fastapi import Depends, Header, Request
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def get_token_from_header_or_cookie(

@@ -7,8 +7,6 @@ import re
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.config import settings
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
@@ -29,6 +27,7 @@ from app.services.chunker import DocumentChunker
 from app.services.normalizer import TextNormalizer
 from app.services.parsers.base import ParsedDocument
 from app.services.parsers.factory import ParserFactory
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 

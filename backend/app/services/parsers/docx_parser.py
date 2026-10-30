@@ -3,10 +3,9 @@
 import io
 from typing import Any
 
-from docx import Document
-
 from app.core.logging import get_logger
 from app.services.parsers.base import DocumentParser, ParsedDocument, ParsedUnit
+from docx import Document
 
 logger = get_logger(__name__)
 

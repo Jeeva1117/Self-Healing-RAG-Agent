@@ -13,11 +13,10 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import jwt
-from argon2 import PasswordHasher
-from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatchError
-
 from app.core.config import settings
 from app.core.errors import UnauthorizedError, ValidationError
+from argon2 import PasswordHasher
+from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatchError
 
 # Initialize Argon2id password hasher with secure production parameters
 _hasher = PasswordHasher(

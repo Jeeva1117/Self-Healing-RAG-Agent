@@ -5,10 +5,6 @@ from uuid import UUID, uuid4
 
 import docx
 import pytest
-from httpx import AsyncClient
-from pypdf import PdfWriter
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.infrastructure.embedding.factory import get_embedding_provider
 from app.services.chunker import DocumentChunker
 from app.services.ingestion_service import IngestionService
@@ -16,6 +12,9 @@ from app.services.normalizer import TextNormalizer
 from app.services.parsers.csv_parser import CSVParser
 from app.services.parsers.docx_parser import DOCXParser
 from app.services.parsers.markdown_parser import MarkdownParser
+from httpx import AsyncClient
+from pypdf import PdfWriter
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def create_sample_pdf(text: str = "This is a sample PDF document for testing.") -> bytes:
@@ -197,9 +196,10 @@ def test_text_normalizer():
 
 def test_intelligent_chunker():
     """Test 10: Chunker produces structure-aware chunks with citation metadata."""
-    content = "## Section 1\n" + (
-        "This is paragraph content describing RAG architecture. " * 30
-    ) + "\n\n" "## Section 2\n" + ("Second section content detailing embeddings and retrieval. " * 30)
+    content = (
+        "## Section 1\n" + ("This is paragraph content describing RAG architecture. " * 30) + "\n\n"
+        "## Section 2\n" + ("Second section content detailing embeddings and retrieval. " * 30)
+    )
     parser = MarkdownParser()
     parsed_doc = parser.parse(content.encode(), "doc.md")
 

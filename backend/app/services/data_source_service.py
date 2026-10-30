@@ -5,8 +5,6 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
 from app.infrastructure.database.models import (
@@ -36,6 +34,7 @@ from app.services.connectors.notion_connector import NotionConnector
 from app.services.connectors.postgres_connector import PostgreSQLConnector
 from app.services.connectors.web_scraper import WebScraperConnector
 from app.services.ingestion_service import IngestionService
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 

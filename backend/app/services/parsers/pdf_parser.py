@@ -3,10 +3,9 @@
 import io
 from typing import Any
 
-from pypdf import PdfReader
-
 from app.core.logging import get_logger
 from app.services.parsers.base import DocumentParser, ParsedDocument, ParsedUnit
+from pypdf import PdfReader
 
 logger = get_logger(__name__)
 

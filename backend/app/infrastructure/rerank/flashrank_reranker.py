@@ -3,11 +3,10 @@
 import asyncio
 from typing import Any
 
-from flashrank import Ranker, RerankRequest
-
 from app.core.config import settings
 from app.core.logging import get_logger
 from app.domain.interfaces.reranker import RankedDocument, RerankerInterface
+from flashrank import Ranker, RerankRequest
 
 logger = get_logger(__name__)
 

@@ -3,7 +3,6 @@
 from typing import Any
 
 import httpx
-
 from app.core.logging import get_logger
 from app.services.connectors.base import (
     BaseConnector,

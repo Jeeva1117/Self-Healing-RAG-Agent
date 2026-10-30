@@ -16,10 +16,6 @@ Validates:
 import uuid
 
 import pytest
-from httpx import AsyncClient
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.domain.interfaces.llm import LLMMessage, LLMProviderInterface, LLMResponse
 from app.infrastructure.database.models import (
     Document,
@@ -45,6 +41,9 @@ from app.services.evaluation import (
 )
 from app.services.observability.schemas import TraceRecord
 from app.services.observability.service import ObservabilityService
+from httpx import AsyncClient
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class PredictablePhase15LLM(LLMProviderInterface):

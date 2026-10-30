@@ -4,9 +4,6 @@ from datetime import UTC, datetime
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query, Request, status
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.api.deps import require_authenticated_user
 from app.core.logging import get_logger
 from app.infrastructure.database.models import User
@@ -23,6 +20,8 @@ from app.schemas.data_source import (
     SyncResponse,
 )
 from app.services.data_source_service import DataSourceService
+from fastapi import APIRouter, Depends, Query, Request, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 router = APIRouter(prefix="/data-sources", tags=["Data Sources & Connectors"])

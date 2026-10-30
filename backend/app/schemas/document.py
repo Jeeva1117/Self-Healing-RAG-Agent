@@ -4,9 +4,8 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, Field
-
 from app.infrastructure.database.models import DocumentStatus
+from pydantic import BaseModel, Field
 
 
 class DocumentResponse(BaseModel):

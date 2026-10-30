@@ -2,8 +2,6 @@
 
 from uuid import UUID
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.logging import get_logger
 from app.domain.interfaces.llm import LLMProviderInterface
 from app.infrastructure.llm.factory import get_llm_provider
@@ -13,6 +11,7 @@ from app.schemas.chat import (
     ChatResponse,
 )
 from app.services.retrieval.retrieval_service import RetrievalService
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 

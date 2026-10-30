@@ -3,11 +3,10 @@
 from collections.abc import Sequence
 from typing import Any
 
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.infrastructure.database.models import AuditLog
 from app.repositories.base import BaseRepository
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class AuditRepository(BaseRepository[AuditLog]):

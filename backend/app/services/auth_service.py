@@ -4,8 +4,6 @@ import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.config import settings
 from app.core.errors import ConflictError, ForbiddenError, NotFoundError, UnauthorizedError
 from app.core.logging import get_logger
@@ -21,6 +19,7 @@ from app.infrastructure.database.models import User, UserRole
 from app.repositories.audit_repository import AuditRepository
 from app.repositories.session_repository import SessionRepository
 from app.repositories.user_repository import UserRepository
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger("app.services.auth")
 

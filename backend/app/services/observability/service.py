@@ -5,9 +5,6 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
-from sqlalchemy import desc, select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.logging import get_logger
 from app.infrastructure.database.models import ExecutionTrace, KnowledgeBase, TraceSpanRecord
 from app.services.observability.alerting import alert_manager
@@ -22,6 +19,8 @@ from app.services.observability.schemas import (
     TraceRecord,
 )
 from app.services.observability.taxonomy import ErrorClassifier
+from sqlalchemy import desc, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger("app.observability.service")
 

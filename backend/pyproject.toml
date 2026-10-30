@@ -21,7 +21,6 @@ select = [
 ignore = [
     "B008", # do not perform function calls in argument defaults (FastAPI Depends)
     "E501", # line too long (prompts and error messages frequently exceed 120 chars)
-    "UP038", # isinstance with tuple vs union
 ]
 
 [tool.mypy]

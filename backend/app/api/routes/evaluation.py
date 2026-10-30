@@ -4,11 +4,6 @@ import uuid
 from datetime import UTC, datetime
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query, Request
-from sqlalchemy import desc, select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
-
 from app.api.deps import require_authenticated_user
 from app.core.exceptions import AppError
 from app.core.logging import get_logger
@@ -41,6 +36,10 @@ from app.services.evaluation.models import (
     SelfHealingMetrics,
 )
 from app.services.evaluation.runner import BaselineComparator, EvaluationRunner
+from fastapi import APIRouter, Depends, Query, Request
+from sqlalchemy import desc, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 logger = get_logger(__name__)
 

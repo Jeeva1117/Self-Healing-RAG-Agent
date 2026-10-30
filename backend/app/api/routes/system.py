@@ -1,9 +1,8 @@
 """System metadata API endpoints."""
 
-from fastapi import APIRouter
-
 from app.schemas.system import SystemInfoResponse
 from app.services.system_service import system_service
+from fastapi import APIRouter
 
 router = APIRouter(prefix="/system", tags=["System"])
 

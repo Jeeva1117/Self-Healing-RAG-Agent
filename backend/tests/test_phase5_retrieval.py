@@ -5,10 +5,6 @@ import math
 from uuid import UUID, uuid4
 
 import pytest
-from httpx import AsyncClient
-from pydantic import ValidationError
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.exceptions import AppError
 from app.infrastructure.database.models import User
 from app.infrastructure.embedding.mock_provider import MockEmbeddingProvider
@@ -18,6 +14,9 @@ from app.schemas.retrieval import RetrievalMode, RetrievalRequest, RetrievalResu
 from app.services.retrieval.bm25_retriever import tokenize_text
 from app.services.retrieval.reciprocal_rank_fusion import ReciprocalRankFusion
 from app.services.retrieval.retrieval_service import RetrievalService
+from httpx import AsyncClient
+from pydantic import ValidationError
+from sqlalchemy.ext.asyncio import AsyncSession
 
 # ==============================================================================
 # 1. Unit Tests: Reciprocal Rank Fusion (Mathematical Correctness & Tie-Breaking)

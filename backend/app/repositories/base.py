@@ -4,10 +4,9 @@ import uuid
 from collections.abc import Sequence
 from typing import Generic, TypeVar
 
+from app.infrastructure.database.base import Base
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from app.infrastructure.database.base import Base
 
 ModelType = TypeVar("ModelType", bound=Base)
 
