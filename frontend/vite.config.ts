@@ -23,4 +23,28 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+              return 'vendor-react'
+            }
+            if (id.includes('@xyflow')) {
+              return 'vendor-xyflow'
+            }
+            if (id.includes('recharts')) {
+              return 'vendor-charts'
+            }
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons'
+            }
+            return 'vendor-libs'
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
+  },
 })
