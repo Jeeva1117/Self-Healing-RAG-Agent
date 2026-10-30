@@ -124,7 +124,9 @@ class EvaluationRunner:
                 retrieval_metrics=RetrievalMetrics(retrieval_latency_ms=0.0),
                 answer_metrics=AnswerMetrics(correct_insufficient_handling=True),
                 recovery_metrics=SelfHealingMetrics(),
-                actual_response_summary="Access denied (403/404)" if permission_denied else "Unauthorized access permitted",
+                actual_response_summary="Access denied (403/404)"
+                if permission_denied
+                else "Unauthorized access permitted",
                 total_latency_ms=total_latency_ms,
             )
 
@@ -178,8 +180,7 @@ class EvaluationRunner:
         # 2. Evaluate Answer & Grounding Metrics
         ans_text = chat_resp.content
         is_insufficient = (
-            chat_resp.is_insufficient_evidence
-            or chat_resp.status == ChatResponseStatus.INSUFFICIENT_EVIDENCE
+            chat_resp.is_insufficient_evidence or chat_resp.status == ChatResponseStatus.INSUFFICIENT_EVIDENCE
         )
         fact_cov = compute_key_fact_coverage(ans_text, case.expected_key_facts)
         cit_validity, valid_cits, total_cits = compute_citation_validity(ans_text, len(chat_resp.citations))
@@ -202,7 +203,9 @@ class EvaluationRunner:
             if not is_insufficient:
                 failure_reasons.append("Expected truthful insufficient-evidence response but received regular answer.")
             if len(chat_resp.citations) > 0:
-                failure_reasons.append(f"Answer cited {len(chat_resp.citations)} chunks when evidence was expected to be absent.")
+                failure_reasons.append(
+                    f"Answer cited {len(chat_resp.citations)} chunks when evidence was expected to be absent."
+                )
         else:
             correct_insufficient = True
             if is_insufficient:
@@ -211,7 +214,9 @@ class EvaluationRunner:
         # Check Citations for Answerable Cases
         if case.expected_citation_required and case.is_evidence_expected:
             if cit_validity < 1.0:
-                failure_reasons.append(f"Citation validity {cit_validity:.1%} below 100% ({valid_cits}/{total_cits} valid).")
+                failure_reasons.append(
+                    f"Citation validity {cit_validity:.1%} below 100% ({valid_cits}/{total_cits} valid)."
+                )
             if len(chat_resp.citations) == 0:
                 failure_reasons.append("No supporting citations provided for answerable query.")
 
@@ -323,7 +328,11 @@ class EvaluationRunner:
         cit_vals = [r.answer_metrics.citation_validity_score for r in results]
         cit_rate = round(sum(cit_vals) / len(cit_vals), 4) if cit_vals else None
 
-        insufficient_cases = [r for r in results if r.category in (EvaluationCategory.INSUFFICIENT_EVIDENCE, EvaluationCategory.UNANSWERABLE)]
+        insufficient_cases = [
+            r
+            for r in results
+            if r.category in (EvaluationCategory.INSUFFICIENT_EVIDENCE, EvaluationCategory.UNANSWERABLE)
+        ]
         if insufficient_cases:
             insufficient_correct = sum(1 for r in insufficient_cases if r.answer_metrics.correct_insufficient_handling)
             insufficient_accuracy = round(insufficient_correct / len(insufficient_cases), 4)
@@ -334,7 +343,11 @@ class EvaluationRunner:
         rec_attempted = sum(1 for r in results if r.recovery_metrics.recovery_attempted)
         rec_rate = round(rec_attempted / total, 4) if total > 0 else 0.0
 
-        rec_successful = sum(1 for r in results if r.recovery_metrics.recovery_attempted and r.recovery_metrics.recovery_outcome == "recovered")
+        rec_successful = sum(
+            1
+            for r in results
+            if r.recovery_metrics.recovery_attempted and r.recovery_metrics.recovery_outcome == "recovered"
+        )
         rec_succ_rate = round(rec_successful / rec_attempted, 4) if rec_attempted > 0 else None
 
         exhausted = sum(1 for r in results if r.recovery_metrics.is_budget_exhausted)

@@ -63,9 +63,8 @@ class ObservabilityService:
 
         # 3. Persist to database if session is present and not currently flushing, isolated from caller
         sync_sess = getattr(self.session, "sync_session", None)
-        is_flushing = (
-            getattr(self.session, "_flushing", False)
-            or (sync_sess is not None and getattr(sync_sess, "_flushing", False))
+        is_flushing = getattr(self.session, "_flushing", False) or (
+            sync_sess is not None and getattr(sync_sess, "_flushing", False)
         )
         if self.session and not is_flushing:
             try:
@@ -157,8 +156,7 @@ class ObservabilityService:
                     query = query.where(ExecutionTrace.model.ilike(f"%{model}%"))
                 if search:
                     query = query.where(
-                        (ExecutionTrace.trace_id.ilike(f"%{search}%"))
-                        | (ExecutionTrace.query.ilike(f"%{search}%"))
+                        (ExecutionTrace.trace_id.ilike(f"%{search}%")) | (ExecutionTrace.query.ilike(f"%{search}%"))
                     )
 
                 query = query.order_by(desc(ExecutionTrace.created_at)).offset(offset).limit(limit)
@@ -207,7 +205,9 @@ class ObservabilityService:
                                     step_type=s.step_type,
                                     status=s.status,
                                     start_time=s.created_at.timestamp() if s.created_at else 0.0,
-                                    end_time=(s.created_at.timestamp() + (s.duration_ms / 1000.0)) if s.created_at else 0.0,
+                                    end_time=(s.created_at.timestamp() + (s.duration_ms / 1000.0))
+                                    if s.created_at
+                                    else 0.0,
                                     duration_ms=s.duration_ms,
                                     inputs=s.inputs or {},
                                     outputs=s.outputs or {},
@@ -435,20 +435,23 @@ class ObservabilityService:
                 retry_attempted=t.recovery_count > 0,
                 recovery_succeeded=t.status == "recovered",
             )
-            error_items.append({
-                "trace_id": t.trace_id,
-                "query": t.query,
-                "created_at": t.created_at,
-                "duration_ms": t.duration_ms,
-                "error_category": diag.category.value,
-                "safe_code": diag.safe_code,
-                "diagnostic_summary": diag.diagnostic_summary,
-                "affected_stage": diag.affected_stage,
-                "is_retryable": diag.is_infrastructure_failure or diag.category.value == "citation_validation_failure",
-                "recovery_succeeded": diag.recovery_succeeded,
-                "suggested_action": diag.suggested_action,
-                "is_infrastructure_failure": diag.is_infrastructure_failure,
-            })
+            error_items.append(
+                {
+                    "trace_id": t.trace_id,
+                    "query": t.query,
+                    "created_at": t.created_at,
+                    "duration_ms": t.duration_ms,
+                    "error_category": diag.category.value,
+                    "safe_code": diag.safe_code,
+                    "diagnostic_summary": diag.diagnostic_summary,
+                    "affected_stage": diag.affected_stage,
+                    "is_retryable": diag.is_infrastructure_failure
+                    or diag.category.value == "citation_validation_failure",
+                    "recovery_succeeded": diag.recovery_succeeded,
+                    "suggested_action": diag.suggested_action,
+                    "is_infrastructure_failure": diag.is_infrastructure_failure,
+                }
+            )
 
         return error_items
 

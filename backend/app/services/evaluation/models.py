@@ -37,7 +37,9 @@ class EvaluationTestCase(BaseModel):
     expected_chunk_ids: list[uuid.UUID] = Field(default_factory=list, description="Ground truth relevant chunk IDs")
     expected_key_facts: list[str] = Field(default_factory=list, description="Key facts required in grounded answer")
     reference_answer: str | None = Field(default=None, description="Gold-standard reference answer")
-    is_evidence_expected: bool = Field(default=True, description="True if evidence should exist; False for unanswerable")
+    is_evidence_expected: bool = Field(
+        default=True, description="True if evidence should exist; False for unanswerable"
+    )
     expected_citation_required: bool = Field(default=True, description="Whether citations are required")
     expected_outcome: str = Field(default="answered", description="Expected ChatResponseStatus or recovery outcome")
     difficulty: str = Field(default="medium", description="Difficulty tier: easy, medium, hard, adversarial")

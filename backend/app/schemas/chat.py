@@ -114,9 +114,7 @@ class ClaimCitation(BaseModel):
     claim_id: str = Field(..., description="Stable claim identifier (e.g. claim-1)")
     claimId: str | None = Field(default=None, description="CamelCase alias")
     text: str = Field(..., description="Specific assertion or claim sentence from the answer")
-    source_chunk_ids: list[UUID] = Field(
-        default_factory=list, description="IDs of chunks that support this claim"
-    )
+    source_chunk_ids: list[UUID] = Field(default_factory=list, description="IDs of chunks that support this claim")
     sourceChunkIds: list[UUID] | None = Field(default=None, description="CamelCase alias")
 
     @model_validator(mode="after")
@@ -148,9 +146,7 @@ class EvidenceMeta(BaseModel):
     untrusted_context_truncated: bool = Field(
         default=False, description="Whether retrieved context was truncated due to budget constraints"
     )
-    has_relevant_evidence: bool = Field(
-        default=False, description="Whether genuinely relevant evidence was retrieved"
-    )
+    has_relevant_evidence: bool = Field(default=False, description="Whether genuinely relevant evidence was retrieved")
 
 
 class RecoveryMeta(BaseModel):
@@ -163,7 +159,9 @@ class RecoveryMeta(BaseModel):
     recovery_outcome: str | None = Field(
         default=None, description="Recovery outcome: recovered, failed, exhausted, non_recoverable"
     )
-    rewritten_query: str | None = Field(default=None, description="Rewritten search query if query rewriting was applied")
+    rewritten_query: str | None = Field(
+        default=None, description="Rewritten search query if query rewriting was applied"
+    )
     termination_reason: str | None = Field(default=None, description="Explicit termination reason if stopped")
 
 
@@ -219,12 +217,8 @@ class ChatResponse(BaseModel):
     conversation_id: str | None = Field(default=None, description="Conversation session identifier")
 
     # Structured Citation & Provenance Breakdown
-    sources: list[SourceItem] = Field(
-        default_factory=list, description="Validated source items from database metadata"
-    )
-    claim_citations: list[ClaimCitation] = Field(
-        default_factory=list, description="Claim-to-evidence mappings"
-    )
+    sources: list[SourceItem] = Field(default_factory=list, description="Validated source items from database metadata")
+    claim_citations: list[ClaimCitation] = Field(default_factory=list, description="Claim-to-evidence mappings")
     citations: list[ChatCitation] = Field(
         default_factory=list, description="Active citation items referenced in answer"
     )

@@ -17,11 +17,63 @@ logger = get_logger(__name__)
 INSUFFICIENT_EVIDENCE_MESSAGE = INSUFFICIENT_EVIDENCE_SENTENCE
 
 STOP_WORDS = {
-    "a", "an", "the", "in", "on", "at", "to", "for", "of", "and", "or", "is", "are", "was",
-    "were", "be", "been", "being", "have", "has", "had", "do", "does", "did", "what", "which",
-    "who", "whom", "this", "that", "these", "those", "how", "why", "when", "where", "can",
-    "could", "should", "would", "explain", "describe", "tell", "show", "me", "about", "with",
-    "from", "by", "as", "into", "through", "during", "before", "after", "above", "below",
+    "a",
+    "an",
+    "the",
+    "in",
+    "on",
+    "at",
+    "to",
+    "for",
+    "of",
+    "and",
+    "or",
+    "is",
+    "are",
+    "was",
+    "were",
+    "be",
+    "been",
+    "being",
+    "have",
+    "has",
+    "had",
+    "do",
+    "does",
+    "did",
+    "what",
+    "which",
+    "who",
+    "whom",
+    "this",
+    "that",
+    "these",
+    "those",
+    "how",
+    "why",
+    "when",
+    "where",
+    "can",
+    "could",
+    "should",
+    "would",
+    "explain",
+    "describe",
+    "tell",
+    "show",
+    "me",
+    "about",
+    "with",
+    "from",
+    "by",
+    "as",
+    "into",
+    "through",
+    "during",
+    "before",
+    "after",
+    "above",
+    "below",
 }
 
 
@@ -77,11 +129,25 @@ class GroundedSynthesisProvider(LLMProviderInterface):
         """Detects if query asks for a list or overview of core concepts and topics."""
         q = query.lower()
         indicators = [
-            "core concept", "core concepts", "main topic", "main topics",
-            "list the topics", "list topics", "topics covered", "what topics",
-            "table of contents", "learning roadmap", "roadmap", "overview of topics",
-            "topics from", "topics in this", "concepts covered", "summary of topics",
-            "list the main topics", "all topics", "curriculum",
+            "core concept",
+            "core concepts",
+            "main topic",
+            "main topics",
+            "list the topics",
+            "list topics",
+            "topics covered",
+            "what topics",
+            "table of contents",
+            "learning roadmap",
+            "roadmap",
+            "overview of topics",
+            "topics from",
+            "topics in this",
+            "concepts covered",
+            "summary of topics",
+            "list the main topics",
+            "all topics",
+            "curriculum",
         ]
         return any(ind in q for ind in indicators)
 
@@ -131,8 +197,12 @@ class GroundedSynthesisProvider(LLMProviderInterface):
                     curr_title = m.group(2).strip()
                     curr_desc = []
                 else:
-                    if curr_title and s and not re.match(
-                        r"^(?:Stage|Topics|Practice goal|Write|Build|Solve|Number).*$", s, re.IGNORECASE
+                    if (
+                        curr_title
+                        and s
+                        and not re.match(
+                            r"^(?:Stage|Topics|Practice goal|Write|Build|Solve|Number).*$", s, re.IGNORECASE
+                        )
                     ):
                         curr_desc.append(s)
 
@@ -159,7 +229,9 @@ class GroundedSynthesisProvider(LLMProviderInterface):
 
                 if other_sections:
                     sec_strs = [f"**{s}** [{oi}]" for s, oi in other_sections[:4]]
-                    out.append(f"\nAdditionally, specific core sections documented in the notes include {', '.join(sec_strs)}.")
+                    out.append(
+                        f"\nAdditionally, specific core sections documented in the notes include {', '.join(sec_strs)}."
+                    )
 
                 return "\n".join(out)
 
@@ -176,9 +248,7 @@ class GroundedSynthesisProvider(LLMProviderInterface):
 
         if collected_sections:
             doc_name = collected_sections[0][2]
-            out = [
-                f"Based on the retrieved sections from **{doc_name}**, the core topics covered include:\n"
-            ]
+            out = [f"Based on the retrieved sections from **{doc_name}**, the core topics covered include:\n"]
             for i, (title, s_idx, _) in enumerate(collected_sections, start=1):
                 out.append(f"{i}. **{title}** [{s_idx}].")
             return "\n".join(out)
@@ -264,7 +334,7 @@ class GroundedSynthesisProvider(LLMProviderInterface):
         body_lines = lines[1:] if lines and re.match(r"^\d+\.\s+", lines[0]) else lines
 
         out = [
-            f"Based on **{doc_name}**{page_info}{sec_info} [{primary_idx}], here is the verified information regarding **\"{user_query}\"**:\n",
+            f'Based on **{doc_name}**{page_info}{sec_info} [{primary_idx}], here is the verified information regarding **"{user_query}"**:\n',
             "\n".join(body_lines).strip(),
             f"\n[{primary_idx}]",
         ]

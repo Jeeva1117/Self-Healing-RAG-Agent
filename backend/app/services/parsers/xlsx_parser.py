@@ -42,7 +42,9 @@ class XLSXParser(DocumentParser):
             if "xl/sharedStrings.xml" in zf.namelist():
                 ss_data = zf.read("xl/sharedStrings.xml")
                 ss_root = ET.fromstring(ss_data)
-                for si in ss_root.findall(".//main:si", NS) or ss_root.findall(".//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}si"):
+                for si in ss_root.findall(".//main:si", NS) or ss_root.findall(
+                    ".//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}si"
+                ):
                     text_parts = []
                     for t in si.iter():
                         if t.tag.endswith("t") and t.text:
@@ -54,11 +56,15 @@ class XLSXParser(DocumentParser):
             if "xl/workbook.xml" in zf.namelist():
                 wb_data = zf.read("xl/workbook.xml")
                 wb_root = ET.fromstring(wb_data)
-                for sheet in wb_root.findall(".//main:sheet", NS) or wb_root.findall(".//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}sheet"):
+                for sheet in wb_root.findall(".//main:sheet", NS) or wb_root.findall(
+                    ".//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}sheet"
+                ):
                     sheet_names.append(sheet.attrib.get("name", "Sheet"))
 
             # 3. Read worksheets
-            worksheet_files = sorted([f for f in zf.namelist() if f.startswith("xl/worksheets/sheet") and f.endswith(".xml")])
+            worksheet_files = sorted(
+                [f for f in zf.namelist() if f.startswith("xl/worksheets/sheet") and f.endswith(".xml")]
+            )
             if not worksheet_files:
                 return ParsedDocument(
                     units=[],
@@ -76,13 +82,21 @@ class XLSXParser(DocumentParser):
 
                 rows_data: list[list[str]] = []
                 # Find all row elements
-                rows = ws_root.findall(".//main:row", NS) or ws_root.findall(".//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}row")
+                rows = ws_root.findall(".//main:row", NS) or ws_root.findall(
+                    ".//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}row"
+                )
                 for row in rows:
                     row_cells: list[str] = []
-                    cells = row.findall(".//main:c", NS) or row.findall(".//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}c")
+                    cells = row.findall(".//main:c", NS) or row.findall(
+                        ".//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}c"
+                    )
                     for c in cells:
                         cell_type = c.attrib.get("t")
-                        v_elem = c.find(".//main:v", NS) if c.find(".//main:v", NS) is not None else c.find(".//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}v")
+                        v_elem = (
+                            c.find(".//main:v", NS)
+                            if c.find(".//main:v", NS) is not None
+                            else c.find(".//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}v")
+                        )
                         val = ""
                         if v_elem is not None and v_elem.text:
                             val = v_elem.text
@@ -126,7 +140,9 @@ class XLSXParser(DocumentParser):
                             row_num = b_start + r_offset + 2
                             row_parts = []
                             for c_idx, val in enumerate(r):
-                                col_name = headers[c_idx] if c_idx < len(headers) and headers[c_idx] else f"Col_{c_idx + 1}"
+                                col_name = (
+                                    headers[c_idx] if c_idx < len(headers) and headers[c_idx] else f"Col_{c_idx + 1}"
+                                )
                                 if val:
                                     row_parts.append(f"{col_name}: {val}")
                             if row_parts:

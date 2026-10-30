@@ -161,11 +161,7 @@ class AgenticRAGOrchestrator:
 
         t_start = time.perf_counter()
         effective_max_retries = max_retries if max_retries is not None else 1
-        effective_deadline = (
-            deadline
-            if deadline is not None
-            else (time.time() + settings.RECOVERY_TIMEOUT_SECONDS)
-        )
+        effective_deadline = deadline if deadline is not None else (time.time() + settings.RECOVERY_TIMEOUT_SECONDS)
 
         # 1. Initialize Phase 10 distributed trace
         trace = Tracer.start_trace(
@@ -279,6 +275,7 @@ class AgenticRAGOrchestrator:
         for r_item in final_state.get("retrieval_results", []):
             try:
                 from app.services.observability.schemas import ChunkScoreProvenance
+
                 scores_provenance.append(
                     ChunkScoreProvenance(
                         chunk_id=str(r_item.chunk_id),

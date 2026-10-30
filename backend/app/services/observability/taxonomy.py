@@ -68,9 +68,11 @@ class ErrorClassifier:
             )
 
         # 3. Insufficient Evidence (Critical: Not an infrastructure failure!)
-        if (code in ("INSUFFICIENT_EVIDENCE", "LOW_RELEVANCE_EVIDENCE")) or (
-            "insufficient" in err_str and "evidence" in err_str
-        ) or (details.get("evidence_status") in ("insufficient", "low_relevance")):
+        if (
+            (code in ("INSUFFICIENT_EVIDENCE", "LOW_RELEVANCE_EVIDENCE"))
+            or ("insufficient" in err_str and "evidence" in err_str)
+            or (details.get("evidence_status") in ("insufficient", "low_relevance"))
+        ):
             return ClassifiedError(
                 category=ErrorCategory.INSUFFICIENT_EVIDENCE,
                 safe_code="EVIDENCE_INSUFFICIENT",
@@ -133,9 +135,8 @@ class ErrorClassifier:
             )
 
         # 7. Embedding Provider Failure
-        if (
-            ("embed" in err_str or "embedding" in err_str)
-            and ("quota" in err_str or "rate" in err_str or "api" in err_str or "fail" in err_str)
+        if ("embed" in err_str or "embedding" in err_str) and (
+            "quota" in err_str or "rate" in err_str or "api" in err_str or "fail" in err_str
         ):
             return ClassifiedError(
                 category=ErrorCategory.EMBEDDING_PROVIDER_FAILURE,

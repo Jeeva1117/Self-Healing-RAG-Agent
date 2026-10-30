@@ -27,6 +27,7 @@ from app.schemas.common import ApiResponse, MetaInfo
 
 def test_meta_info_without_total_field_reproduces_original_error():
     """Reproduces the exact original error: assigning an undeclared field to a Pydantic model raises ValueError: '<Model>' object has no field '<field>'."""
+
     class MetaInfoOld(BaseModel):
         request_id: str | None = None
         timestamp: str
@@ -102,9 +103,7 @@ async def test_get_connector_catalog_success(client: AsyncClient, auth_headers_u
 
 
 @pytest.mark.asyncio
-async def test_list_data_sources_empty_state_returns_valid_envelope(
-    client: AsyncClient, auth_headers_user_a: dict
-):
+async def test_list_data_sources_empty_state_returns_valid_envelope(client: AsyncClient, auth_headers_user_a: dict):
     """Verifies GET /api/v1/data-sources returns 200 with an empty list and valid total=0, not an HTTP 500 error."""
     res = await client.get("/api/v1/data-sources", headers=auth_headers_user_a)
     assert res.status_code == 200

@@ -742,4 +742,3 @@ async def test_whitespace_and_invalid_params_rejected_at_api_level(
         headers=auth_headers_user_a,
     )
     assert res2.status_code == 422
-

@@ -105,7 +105,7 @@ class DocumentChunker:
             return False
         if re.match(r"^(?:Python A to Z Notes.*|Page \d+|\d+|http.*)$", s, re.IGNORECASE):
             return False
-        if any(c in s for c in ["=", "(", ")", "[", "]", "{", "}", "\"", "'", "<", ">", "+", "*", ";", "\\"]):
+        if any(c in s for c in ["=", "(", ")", "[", "]", "{", "}", '"', "'", "<", ">", "+", "*", ";", "\\"]):
             return False
         if any(k in s.lower() for k in ["def ", "class ", "import ", "from ", "return ", "print", "raise ", "with "]):
             return False
@@ -165,11 +165,7 @@ class DocumentChunker:
             is_md = is_markdown and self._is_markdown_heading(line)
             content_str = "\n".join(current_lines).strip()
             # Standalone topics only start a new section if current accumulated content is substantive
-            is_topic = (
-                not in_numbered_section
-                and len(content_str) >= 150
-                and self._is_standalone_topic(line)
-            )
+            is_topic = not in_numbered_section and len(content_str) >= 150 and self._is_standalone_topic(line)
 
             if is_num or is_md or is_topic:
                 if content_str and len(content_str) >= self.min_chunk_length:

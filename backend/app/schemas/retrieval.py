@@ -245,4 +245,3 @@ class ComparisonResponse(BaseModel):
     hybrid_results: list[RetrievalResultItem]
     latency: RetrievalLatencyBreakdown
     warnings: list[str] = Field(default_factory=list)
-

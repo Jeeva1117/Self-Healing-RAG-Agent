@@ -91,7 +91,6 @@ class PDFParser(DocumentParser):
                     ),
                 )
 
-
             return ParsedDocument(units=units, raw_metadata=raw_metadata)
 
         except Exception as e:

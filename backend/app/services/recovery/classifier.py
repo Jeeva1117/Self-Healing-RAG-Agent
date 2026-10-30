@@ -8,14 +8,36 @@ from app.services.recovery.models import FailureCategory, FailureDiagnosis, Reco
 logger = get_logger(__name__)
 
 TRANSIENT_ERROR_KEYWORDS = (
-    "timeout", "timed out", "connection refused", "connection error", "network",
-    "deadlock", "lock wait", "temporary", "retry", "503", "502", "504", "429", "rate limit",
-    "too many requests", "overloaded", "transient"
+    "timeout",
+    "timed out",
+    "connection refused",
+    "connection error",
+    "network",
+    "deadlock",
+    "lock wait",
+    "temporary",
+    "retry",
+    "503",
+    "502",
+    "504",
+    "429",
+    "rate limit",
+    "too many requests",
+    "overloaded",
+    "transient",
 )
 
 PERMANENT_ERROR_KEYWORDS = (
-    "access denied", "not found", "unauthorized", "permission", "401", "403", "404",
-    "invalid token", "forbidden", "not authenticated"
+    "access denied",
+    "not found",
+    "unauthorized",
+    "permission",
+    "401",
+    "403",
+    "404",
+    "invalid token",
+    "forbidden",
+    "not authenticated",
 )
 
 
@@ -138,7 +160,9 @@ class FailureClassifier:
                 category=FailureCategory.GENERATION_FAILURE,
                 reason=f"LLM provider error: {error}",
                 is_recoverable=is_transient,
-                suggested_action=RecoveryAction.RETRY_TRANSIENT if is_transient else RecoveryAction.TERMINATE_NON_RECOVERABLE,
+                suggested_action=RecoveryAction.RETRY_TRANSIENT
+                if is_transient
+                else RecoveryAction.TERMINATE_NON_RECOVERABLE,
                 details={"error": str(error), "is_transient": is_transient},
             )
 

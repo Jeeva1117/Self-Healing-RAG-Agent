@@ -94,7 +94,6 @@ async def get_document_chunks(
     offset: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=100),
 ) -> ApiResponse[DocumentChunkListResponse]:
-
     ingestion = IngestionService(session)
     items, total = await ingestion.get_document_chunks(
         document_id=id, user_id=current_user.id, offset=offset, limit=limit

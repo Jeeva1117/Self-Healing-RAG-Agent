@@ -50,7 +50,9 @@ def create_encrypted_pdf() -> bytes:
     return buf.getvalue()
 
 
-def create_valid_docx(heading: str = "System Overview", body: str = "FastAPI backend handles document ingestion.") -> bytes:
+def create_valid_docx(
+    heading: str = "System Overview", body: str = "FastAPI backend handles document ingestion."
+) -> bytes:
     """Creates a valid DOCX document in-memory."""
     doc = docx.Document()
     doc.add_heading(heading, level=1)
@@ -77,16 +79,16 @@ def create_valid_xlsx() -> bytes:
         zf.writestr(
             "xl/sharedStrings.xml",
             '<sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
-            '<si><t>Model</t></si><si><t>Latency</t></si>'
-            '<si><t>Groq LLaMA 3.3</t></si><si><t>120ms</t></si></sst>',
+            "<si><t>Model</t></si><si><t>Latency</t></si>"
+            "<si><t>Groq LLaMA 3.3</t></si><si><t>120ms</t></si></sst>",
         )
         zf.writestr(
             "xl/worksheets/sheet1.xml",
             '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
-            '<sheetData>'
+            "<sheetData>"
             '<row r="1"><c t="s"><v>0</v></c><c t="s"><v>1</v></c></row>'
             '<row r="2"><c t="s"><v>2</v></c><c t="s"><v>3</v></c></row>'
-            '</sheetData></worksheet>',
+            "</sheetData></worksheet>",
         )
     return buf.getvalue()
 
@@ -114,7 +116,11 @@ async def test_all_supported_file_types_ingested_end_to_end(
 
     test_files = [
         ("report.txt", b"Plain text architectural specifications for RAG agents.", "text/plain"),
-        ("notes.md", b"# Markdown Guide\n\nFeatures include **hybrid search** and self-healing loops.", "text/markdown"),
+        (
+            "notes.md",
+            b"# Markdown Guide\n\nFeatures include **hybrid search** and self-healing loops.",
+            "text/markdown",
+        ),
         ("data.csv", b"service,status,qps\nvector_db,healthy,4500\nllm_groq,healthy,1200", "text/csv"),
         (
             "page.html",
@@ -126,7 +132,11 @@ async def test_all_supported_file_types_ingested_end_to_end(
             json.dumps({"pipeline": "RAG", "retrieval": "hybrid", "rerank": "flashrank"}).encode("utf-8"),
             "application/json",
         ),
-        ("guide.docx", create_valid_docx("DOCX Guide", "DOCX extraction preserves document sections."), "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
+        (
+            "guide.docx",
+            create_valid_docx("DOCX Guide", "DOCX extraction preserves document sections."),
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ),
         ("metrics.xlsx", create_valid_xlsx(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
     ]
 
@@ -193,11 +203,13 @@ async def test_empty_json_document_handling():
 @pytest.mark.asyncio
 async def test_web_scraper_normalize_and_metadata():
     """Verifies that WebScraper extracts headings, titles, clean text, and respects URL domains."""
-    connector = WebScraperConnector({
-        "root_url": "https://fastapi.tiangolo.com/",
-        "max_pages": 5,
-        "max_depth": 1,
-    })
+    connector = WebScraperConnector(
+        {
+            "root_url": "https://fastapi.tiangolo.com/",
+            "max_pages": 5,
+            "max_depth": 1,
+        }
+    )
 
     # Validate config
     is_valid, _ = connector.validate_config()
@@ -266,13 +278,15 @@ def test_notion_block_normalization():
 
 def test_postgres_column_security_exclusions():
     """Verifies that sensitive columns (passwords, tokens, ssns) are excluded from tabular extraction."""
-    connector = PostgreSQLConnector({
-        "host": "127.0.0.1",
-        "port": 5432,
-        "database": "analytics",
-        "schema": "public",
-        "allow_self_connect": True,
-    })
+    connector = PostgreSQLConnector(
+        {
+            "host": "127.0.0.1",
+            "port": 5432,
+            "database": "analytics",
+            "schema": "public",
+            "allow_self_connect": True,
+        }
+    )
 
     all_columns = ["id", "customer_name", "email", "password_hash", "access_token", "ssn", "created_at"]
     safe_columns = [col for col in all_columns if not connector.is_sensitive_column(col)]

@@ -147,12 +147,14 @@ class RetrievalService:
 
                 passage_text = f"{header}\n{c.content}"
 
-                docs_for_rerank.append({
-                    "id": str(c.chunk_id),
-                    "content": passage_text,
-                    "metadata": c.metadata,
-                    "original_rank": c.final_rank,
-                })
+                docs_for_rerank.append(
+                    {
+                        "id": str(c.chunk_id),
+                        "content": passage_text,
+                        "metadata": c.metadata,
+                        "original_rank": c.final_rank,
+                    }
+                )
 
             try:
                 ranked_docs = await self.reranker.rerank(
@@ -163,8 +165,7 @@ class RetrievalService:
 
                 # Re-map cross-encoder scores and reorder candidates
                 score_map = {
-                    r.document_id: (r.relevance_score, rank_i)
-                    for rank_i, r in enumerate(ranked_docs, start=1)
+                    r.document_id: (r.relevance_score, rank_i) for rank_i, r in enumerate(ranked_docs, start=1)
                 }
                 reranked_items: list[RetrievalResultItem] = []
 

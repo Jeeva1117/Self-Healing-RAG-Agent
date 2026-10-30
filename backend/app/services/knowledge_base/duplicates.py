@@ -88,8 +88,7 @@ class KnowledgeBaseDuplicateEngine:
 
         # Precompute word tokens for near-duplicate search
         doc_tokens: dict[UUID, set[str]] = {
-            doc.id: _tokenize_words(doc_chunks_map.get(doc.id, "") or doc.filename)
-            for doc in documents
+            doc.id: _tokenize_words(doc_chunks_map.get(doc.id, "") or doc.filename) for doc in documents
         }
 
         # Pairwise comparison (bounded to KB documents)

@@ -174,6 +174,7 @@ async def phase9_env(db_session: AsyncSession, user_a: User, user_b: User):
 # 1. Metric calculations using known hand-checked examples
 # ======================================================================
 
+
 def test_metric_calculations_hand_checked_examples():
     """Test 1: Hand-calculated mathematical verification for Precision, Recall, MRR, nDCG."""
     retrieved = ["doc_A", "doc_B", "doc_C", "doc_D", "doc_E"]
@@ -209,6 +210,7 @@ def test_metric_calculations_hand_checked_examples():
 # 2. Precision@K and Recall@K with known IDs
 # ======================================================================
 
+
 def test_precision_and_recall_at_k_bounds():
     """Test 2: Precision@K and Recall@K boundaries and edge constraints."""
     items = ["c1", "c2", "c3"]
@@ -230,6 +232,7 @@ def test_precision_and_recall_at_k_bounds():
 # ======================================================================
 # 3. MRR and nDCG ranking behavior
 # ======================================================================
+
 
 def test_mrr_and_ndcg_ranking_behavior():
     """Test 3: Ranking sensitivity: top rank yields higher score than lower rank."""
@@ -257,6 +260,7 @@ def test_mrr_and_ndcg_ranking_behavior():
 # 4. Empty retrieval and missing ground truth handling
 # ======================================================================
 
+
 def test_empty_retrieval_and_missing_ground_truth():
     """Test 4: Missing labels return None so unlabelled datasets are not treated as 0%."""
     # When no ground-truth relevant IDs exist (unlabelled):
@@ -276,6 +280,7 @@ def test_empty_retrieval_and_missing_ground_truth():
 # ======================================================================
 # 5. Citation ID and source metadata validation
 # ======================================================================
+
 
 def test_citation_id_and_source_validation():
     """Test 5: Validates bracketed citations against available chunk count."""
@@ -301,10 +306,9 @@ def test_citation_id_and_source_validation():
 # 6. Answerable questions with known expected facts
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_answerable_question_evaluation(
-    db_session: AsyncSession, user_a: User, phase9_env
-):
+async def test_answerable_question_evaluation(db_session: AsyncSession, user_a: User, phase9_env):
     """Test 6: Evaluates answerable question; verifies fact coverage and grounding pass."""
     kb_a = phase9_env["kb_a"]
     chunk_1 = phase9_env["chunk_1"]
@@ -337,10 +341,9 @@ async def test_answerable_question_evaluation(
 # 7. Unanswerable questions and insufficient-evidence behavior
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_unanswerable_question_insufficient_evidence(
-    db_session: AsyncSession, user_a: User, phase9_env
-):
+async def test_unanswerable_question_insufficient_evidence(db_session: AsyncSession, user_a: User, phase9_env):
     """Test 7: Unanswerable inquiry must produce truthful insufficient evidence without citations."""
     kb_a = phase9_env["kb_a"]
     llm = PredictableMockLLM(["I do not find sufficient matching information in the authorized documents."])
@@ -367,10 +370,9 @@ async def test_unanswerable_question_insufficient_evidence(
 # 8. Contradictory evidence and version isolation
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_contradictory_evidence_case(
-    db_session: AsyncSession, user_a: User, phase9_env
-):
+async def test_contradictory_evidence_case(db_session: AsyncSession, user_a: User, phase9_env):
     """Test 8: Evaluates contradictory evidence handling."""
     kb_a = phase9_env["kb_a"]
     llm = PredictableMockLLM(["The active specification defines Python functions using def [1]."])
@@ -392,6 +394,7 @@ async def test_contradictory_evidence_case(
 # ======================================================================
 # 9. Self-healing success and recovery tracking
 # ======================================================================
+
 
 def test_self_healing_recovery_metrics():
     """Test 9: SelfHealingMetrics accurately reflects recovery success vs exhaustion."""
@@ -423,6 +426,7 @@ def test_self_healing_recovery_metrics():
 # ======================================================================
 # 10. Recovery retry-budget exhaustion
 # ======================================================================
+
 
 def test_recovery_retry_budget_exhaustion_rate():
     """Test 10: RunEvaluationSummary aggregates budget exhaustion rate."""
@@ -457,10 +461,9 @@ def test_recovery_retry_budget_exhaustion_rate():
 # 11. Unauthorized knowledge-base access boundary
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_unauthorized_kb_access_eval(
-    db_session: AsyncSession, user_a: User, phase9_env
-):
+async def test_unauthorized_kb_access_eval(db_session: AsyncSession, user_a: User, phase9_env):
     """Test 11: Evaluation test case targeting an unauthorized KB terminates with access denied."""
     kb_b = phase9_env["kb_b"]  # Owned by user_b
     runner = EvaluationRunner(session=db_session)
@@ -484,10 +487,9 @@ async def test_unauthorized_kb_access_eval(
 # 12. Evaluation-run partial failure handling
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_suite_partial_failure_aggregation(
-    db_session: AsyncSession, user_a: User, phase9_env
-):
+async def test_suite_partial_failure_aggregation(db_session: AsyncSession, user_a: User, phase9_env):
     """Test 12: Suite with 1 pass and 1 intentional fail calculates honest pass rate (50%)."""
     kb_a = phase9_env["kb_a"]
     chunk_1 = phase9_env["chunk_1"]
@@ -528,6 +530,7 @@ async def test_suite_partial_failure_aggregation(
 # ======================================================================
 # 13. Baseline comparison and incompatible-run rejection
 # ======================================================================
+
 
 def test_baseline_comparison_and_incompatible_rejection():
     """Test 13: Baseline comparator categorizes diffs and rejects dataset mismatches."""
@@ -570,6 +573,7 @@ def test_baseline_comparison_and_incompatible_rejection():
 # 14. API authentication and input validation
 # ======================================================================
 
+
 @pytest.mark.asyncio
 async def test_api_authentication_and_input_validation(
     client: AsyncClient,
@@ -586,6 +590,7 @@ async def test_api_authentication_and_input_validation(
 # ======================================================================
 # 15. Persistence and retrieval of evaluation results
 # ======================================================================
+
 
 @pytest.mark.asyncio
 async def test_evaluation_persistence_and_retrieval(
@@ -637,10 +642,9 @@ async def test_evaluation_persistence_and_retrieval(
 # 16. Dashboard summary endpoint and statistics aggregation
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_dashboard_summary_endpoint(
-    auth_headers_user_a: dict[str, str], client: AsyncClient
-):
+async def test_dashboard_summary_endpoint(auth_headers_user_a: dict[str, str], client: AsyncClient):
     """Test 16: Summary stats endpoint calculates aggregates across user runs."""
     res = await client.get("/api/v1/evaluation/metrics/summary", headers=auth_headers_user_a)
     assert res.status_code == 200
@@ -652,6 +656,7 @@ async def test_dashboard_summary_endpoint(
 # ======================================================================
 # 17. Custom dataset registration
 # ======================================================================
+
 
 def test_custom_dataset_registration():
     """Test 17: EvaluationDatasetRegistry allows registering and retrieving custom suites."""
@@ -672,6 +677,7 @@ def test_custom_dataset_registration():
 # ======================================================================
 # 18. Groundedness and topical relevance scoring invariants
 # ======================================================================
+
 
 def test_groundedness_and_relevance_invariants():
     """Test 18: Groundedness and relevance mathematical invariants."""
@@ -694,6 +700,7 @@ def test_groundedness_and_relevance_invariants():
 # ======================================================================
 # 19. Full end-to-end benchmark execution via FastAPI router
 # ======================================================================
+
 
 @pytest.mark.asyncio
 async def test_end_to_end_benchmark_run_via_api(

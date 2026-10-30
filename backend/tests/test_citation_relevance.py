@@ -180,7 +180,7 @@ def test_chunker_separates_python_page_3_topics():
     assert "Comparison and logical operators" in op_chunk.content
     assert "Assignment and membership" in op_chunk.content
     assert "a, b = 10, 3" in op_chunk.content
-    assert "in \"python\"" in op_chunk.content
+    assert 'in "python"' in op_chunk.content
 
     # 2. Operators chunk MUST NOT contain unrelated topics
     assert "Type conversion" not in op_chunk.content
@@ -188,7 +188,7 @@ def test_chunker_separates_python_page_3_topics():
     assert "3. Input and Output" not in op_chunk.content
     assert "f-strings" not in op_chunk.content
     assert "5. Conditional Statements" not in op_chunk.content
-    assert "grade = \"A\"" not in op_chunk.content
+    assert 'grade = "A"' not in op_chunk.content
 
 
 def test_chunker_separates_python_page_6_functions():
@@ -247,12 +247,7 @@ async def test_reranker_relevance_for_operator_queries():
         "    grade = 'B'"
     )
 
-    type_content = (
-        "Type conversion\n"
-        " number_text = '42'\n"
-        "number = int(number_text)\n"
-        "print(number + 8)"
-    )
+    type_content = "Type conversion\n" " number_text = '42'\n" "number = int(number_text)\n" "print(number + 8)"
 
     docs = [
         {
@@ -301,12 +296,7 @@ async def test_reranker_relevance_for_function_queries():
         "Parameters, default arguments, and return values"
     )
 
-    op_content = (
-        "4. Operators\n"
-        "Arithmetic\n"
-        " a, b = 10, 3\n"
-        "print(a + b)"
-    )
+    op_content = "4. Operators\n" "Arithmetic\n" " a, b = 10, 3\n" "print(a + b)"
 
     docs = [
         {
@@ -336,12 +326,7 @@ async def test_reranker_relevance_for_unrelated_queries():
     reranker = FlashRankReranker()
     query = "Explain quantum entanglement in interstellar deep space wormholes"
 
-    op_content = (
-        "4. Operators\n"
-        "Arithmetic\n"
-        " a, b = 10, 3\n"
-        "print(a + b)"
-    )
+    op_content = "4. Operators\n" "Arithmetic\n" " a, b = 10, 3\n" "print(a + b)"
 
     docs = [
         {

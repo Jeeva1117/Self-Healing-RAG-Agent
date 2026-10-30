@@ -52,12 +52,14 @@ class FlashRankReranker(RerankerInterface):
             text = str(doc.get("content") or doc.get("text") or "")
             # Truncate passage text to max 2000 chars for safe fast inference
             truncated_text = text[:2000] if len(text) > 2000 else text
-            passages.append({
-                "id": str(doc.get("id") or doc.get("document_id") or idx),
-                "text": truncated_text,
-                "meta": doc.get("metadata", {}),
-                "original_rank": doc.get("original_rank", idx + 1),
-            })
+            passages.append(
+                {
+                    "id": str(doc.get("id") or doc.get("document_id") or idx),
+                    "text": truncated_text,
+                    "meta": doc.get("metadata", {}),
+                    "original_rank": doc.get("original_rank", idx + 1),
+                }
+            )
 
         rerank_req = RerankRequest(query=query[:500], passages=passages)
         raw_results = self._ranker.rerank(rerank_req)

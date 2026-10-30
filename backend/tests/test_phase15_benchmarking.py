@@ -51,10 +51,13 @@ class PredictablePhase15LLM(LLMProviderInterface):
     """Deterministic Mock LLM for Phase 15 evaluation test execution."""
 
     def __init__(self, responses: list[str] | None = None):
-        self.responses = list(responses or [
-            "Python arithmetic operators include +, -, *, and / [1].",
-            "Lambda functions provide anonymous one-line expressions [2].",
-        ])
+        self.responses = list(
+            responses
+            or [
+                "Python arithmetic operators include +, -, *, and / [1].",
+                "Lambda functions provide anonymous one-line expressions [2].",
+            ]
+        )
         self.call_count = 0
 
     async def generate(self, messages: list[LLMMessage], **kwargs) -> LLMResponse:
@@ -276,6 +279,7 @@ async def test_cross_tenant_access_rejection(
 
     # Attempting to query User A's KB with User B's credentials must raise AppError (404/403)
     from app.core.exceptions import AppError
+
     with pytest.raises(AppError) as exc_info:
         await orchestrator.run(request=req, user_id=user_b.id)
     assert exc_info.value.status_code in (403, 404)

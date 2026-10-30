@@ -122,6 +122,7 @@ async def groq_test_env(db_session: AsyncSession, user_a: User):
 # 1. Relevant PDF evidence -> Groq invocation -> grounded answer with valid citations
 # ==============================================================================
 
+
 @pytest.mark.asyncio
 async def test_grounded_answer_with_valid_citations(
     db_session: AsyncSession,
@@ -160,6 +161,7 @@ async def test_grounded_answer_with_valid_citations(
 # ==============================================================================
 # 2. No relevant evidence -> Groq general answer without fabricated citations
 # ==============================================================================
+
 
 @pytest.mark.asyncio
 async def test_general_ai_answer_without_fabricated_citations(
@@ -200,6 +202,7 @@ async def test_general_ai_answer_without_fabricated_citations(
 # 3. Missing private policy evidence -> honest refusal without hallucination
 # ==============================================================================
 
+
 @pytest.mark.asyncio
 async def test_missing_policy_honest_refusal(
     db_session: AsyncSession,
@@ -228,6 +231,7 @@ async def test_missing_policy_honest_refusal(
 # ==============================================================================
 # 4. Mixed question -> Document claims cited, general explanation distinguished
 # ==============================================================================
+
 
 @pytest.mark.asyncio
 async def test_mixed_question_behavior(
@@ -263,6 +267,7 @@ async def test_mixed_question_behavior(
 # 5. Missing API key -> Clear configuration error
 # ==============================================================================
 
+
 def test_missing_api_key_configuration_failure():
     """Test 5: Empty or missing GROQ_API_KEY raises AppError(LLM_CONFIG_ERROR)."""
     provider = GroqProvider(api_key="")
@@ -276,6 +281,7 @@ def test_missing_api_key_configuration_failure():
 # ==============================================================================
 # 6. Invalid API key -> Handled authentication error without secret leakage
 # ==============================================================================
+
 
 @pytest.mark.asyncio
 async def test_invalid_api_key_auth_error_no_secret_leak():
@@ -301,6 +307,7 @@ async def test_invalid_api_key_auth_error_no_secret_leak():
 # ==============================================================================
 # 7. Rate limit (429) & timeout -> Bounded retry behavior
 # ==============================================================================
+
 
 @pytest.mark.asyncio
 async def test_rate_limit_and_timeout_bounded_retry():
@@ -328,7 +335,9 @@ async def test_timeout_bounded_retry():
     """Test 7b: Request timeout triggers bounded retries before LLM_TIMEOUT."""
     provider = GroqProvider(api_key="mock_groq_valid_key_1234567890", max_retries=1, timeout_seconds=1.0)
 
-    with patch("httpx.AsyncClient.post", new_callable=AsyncMock, side_effect=httpx.TimeoutException("Read timeout")) as mock_post:
+    with patch(
+        "httpx.AsyncClient.post", new_callable=AsyncMock, side_effect=httpx.TimeoutException("Read timeout")
+    ) as mock_post:
         with pytest.raises(AppError) as exc_info:
             await provider.generate(messages=[LLMMessage(role="user", content="Hi")])
 
@@ -340,6 +349,7 @@ async def test_timeout_bounded_retry():
 # ==============================================================================
 # 8. Irrelevant retrieval results -> Not presented as evidence
 # ==============================================================================
+
 
 @pytest.mark.asyncio
 async def test_irrelevant_chunks_not_presented_as_evidence(
@@ -370,6 +380,7 @@ async def test_irrelevant_chunks_not_presented_as_evidence(
 # ==============================================================================
 # 9. Citation IDs refer strictly to real retrieved sources
 # ==============================================================================
+
 
 @pytest.mark.asyncio
 async def test_citation_ids_refer_to_real_retrieved_sources(
@@ -403,6 +414,7 @@ async def test_citation_ids_refer_to_real_retrieved_sources(
 # 10. Secret Redaction Utility Tests
 # ==============================================================================
 
+
 def test_secret_redaction_utility():
     """Test 10: Secret redaction sanitizes gsk_ keys and Bearer tokens."""
     sample_gsk = "gsk_" + "1234567890abcdef123456"
@@ -427,9 +439,7 @@ async def test_groq_stream_error_decodes_bytes():
     provider = GroqProvider(api_key="test-key")
     fake_stream_resp = MagicMock()
     fake_stream_resp.status_code = 429
-    fake_stream_resp.aread = AsyncMock(
-        return_value=b'{"error": "rate_limit_exceeded for gsk_1234567890abcdef123456"}'
-    )
+    fake_stream_resp.aread = AsyncMock(return_value=b'{"error": "rate_limit_exceeded for gsk_1234567890abcdef123456"}')
 
     mock_client = MagicMock()
     mock_client.__aenter__.return_value = mock_client
@@ -441,9 +451,7 @@ async def test_groq_stream_error_decodes_bytes():
 
     with patch("httpx.AsyncClient", return_value=mock_client):
         with pytest.raises(AppError) as exc_info:
-            async for _ in provider.generate_stream(
-                messages=[LLMMessage(role="user", content="Hello")]
-            ):
+            async for _ in provider.generate_stream(messages=[LLMMessage(role="user", content="Hello")]):
                 pass
 
         assert exc_info.value.code == "LLM_STREAM_ERROR"
@@ -456,6 +464,7 @@ async def test_groq_stream_error_decodes_bytes():
 # 11. Opt-In Live Groq Smoke Test
 # ==============================================================================
 
+
 @pytest.mark.asyncio
 async def test_opt_in_live_groq_smoke_test():
     """Test 11: Live Groq API verification (OPT-IN ONLY).
@@ -464,6 +473,7 @@ async def test_opt_in_live_groq_smoke_test():
     Never requires an API key in CI or default unit test runs.
     """
     from app.core.config import settings
+
     api_key = os.getenv("GROQ_API_KEY") or getattr(settings, "GROQ_API_KEY", "")
     if os.getenv("LIVE_GROQ_TEST", "").lower() != "true" or not api_key:
         pytest.skip("Opt-in live Groq smoke test skipped. Set LIVE_GROQ_TEST=true and GROQ_API_KEY to run.")

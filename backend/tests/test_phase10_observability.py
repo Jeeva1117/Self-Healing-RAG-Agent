@@ -157,6 +157,7 @@ def test_structured_log_and_data_redaction():
     # Verify JSONFormatter redacts logged record text
     formatter = JSONFormatter()
     import logging
+
     record = logging.LogRecord(
         name="test.logger",
         level=logging.INFO,
@@ -342,17 +343,29 @@ def test_alert_rule_threshold_evaluation():
     )
 
     # Sub-threshold: no alert
-    metrics_ok = MetricsCalculator.calculate([
-        TraceRecord(trace_id="t1", query="q", status="completed", start_time=1, end_time=2, duration_ms=10, created_at=""),
-        TraceRecord(trace_id="t2", query="q", status="completed", start_time=1, end_time=2, duration_ms=10, created_at=""),
-    ])
+    metrics_ok = MetricsCalculator.calculate(
+        [
+            TraceRecord(
+                trace_id="t1", query="q", status="completed", start_time=1, end_time=2, duration_ms=10, created_at=""
+            ),
+            TraceRecord(
+                trace_id="t2", query="q", status="completed", start_time=1, end_time=2, duration_ms=10, created_at=""
+            ),
+        ]
+    )
     assert rule.evaluate(metrics_ok) is None
 
     # Over threshold: alerts
-    metrics_bad = MetricsCalculator.calculate([
-        TraceRecord(trace_id="t1", query="q", status="failed", start_time=1, end_time=2, duration_ms=10, created_at=""),
-        TraceRecord(trace_id="t2", query="q", status="completed", start_time=1, end_time=2, duration_ms=10, created_at=""),
-    ])
+    metrics_bad = MetricsCalculator.calculate(
+        [
+            TraceRecord(
+                trace_id="t1", query="q", status="failed", start_time=1, end_time=2, duration_ms=10, created_at=""
+            ),
+            TraceRecord(
+                trace_id="t2", query="q", status="completed", start_time=1, end_time=2, duration_ms=10, created_at=""
+            ),
+        ]
+    )
     alert = rule.evaluate(metrics_bad)
     assert alert is not None
     assert alert.severity == "critical"
@@ -374,9 +387,15 @@ def test_alert_cooldown_deduplication():
     )
 
     t = [
-        TraceRecord(trace_id="1", query="q", status="completed", start_time=1, end_time=2, duration_ms=200, created_at=""),
-        TraceRecord(trace_id="2", query="q", status="completed", start_time=1, end_time=2, duration_ms=210, created_at=""),
-        TraceRecord(trace_id="3", query="q", status="completed", start_time=1, end_time=2, duration_ms=220, created_at=""),
+        TraceRecord(
+            trace_id="1", query="q", status="completed", start_time=1, end_time=2, duration_ms=200, created_at=""
+        ),
+        TraceRecord(
+            trace_id="2", query="q", status="completed", start_time=1, end_time=2, duration_ms=210, created_at=""
+        ),
+        TraceRecord(
+            trace_id="3", query="q", status="completed", start_time=1, end_time=2, duration_ms=220, created_at=""
+        ),
     ]
     metrics = MetricsCalculator.calculate(t)
 

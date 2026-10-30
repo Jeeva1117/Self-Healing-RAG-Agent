@@ -82,10 +82,12 @@ class _HTMLTextExtractor(HTMLParser):
                 if self._current_heading and self._current_heading != "Introduction"
                 else cleaned_content
             )
-            self.sections.append({
-                "heading": self._current_heading,
-                "text": section_text,
-            })
+            self.sections.append(
+                {
+                    "heading": self._current_heading,
+                    "text": section_text,
+                }
+            )
 
     def close(self):
         super().close()

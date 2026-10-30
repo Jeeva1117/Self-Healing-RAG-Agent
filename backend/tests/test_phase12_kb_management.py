@@ -305,10 +305,18 @@ async def test_exact_and_near_duplicate_detection(
     )
     db_session.add_all([d1, d2, d3, d4])
 
-    v1 = DocumentVersion(id=uuid4(), document_id=d1.id, version_number=1, checksum=d1.checksum, storage_key="k1", is_active=True)
-    v2 = DocumentVersion(id=uuid4(), document_id=d2.id, version_number=1, checksum=d2.checksum, storage_key="k2", is_active=True)
-    v3 = DocumentVersion(id=uuid4(), document_id=d3.id, version_number=1, checksum=d3.checksum, storage_key="k3", is_active=True)
-    v4 = DocumentVersion(id=uuid4(), document_id=d4.id, version_number=1, checksum=d4.checksum, storage_key="k4", is_active=True)
+    v1 = DocumentVersion(
+        id=uuid4(), document_id=d1.id, version_number=1, checksum=d1.checksum, storage_key="k1", is_active=True
+    )
+    v2 = DocumentVersion(
+        id=uuid4(), document_id=d2.id, version_number=1, checksum=d2.checksum, storage_key="k2", is_active=True
+    )
+    v3 = DocumentVersion(
+        id=uuid4(), document_id=d3.id, version_number=1, checksum=d3.checksum, storage_key="k3", is_active=True
+    )
+    v4 = DocumentVersion(
+        id=uuid4(), document_id=d4.id, version_number=1, checksum=d4.checksum, storage_key="k4", is_active=True
+    )
     db_session.add_all([v1, v2, v3, v4])
 
     shared_text = "All employees must follow standard security procedures when handling sensitive user records and confidential credentials."
@@ -340,7 +348,6 @@ async def test_exact_and_near_duplicate_detection(
     db_session.add_all([c1, c3, c4])
     await db_session.commit()
 
-
     engine = KnowledgeBaseDuplicateEngine(db_session)
     report = await engine.detect_duplicates(kb_user_a.id, user_a.id, similarity_threshold=0.7)
 
@@ -355,10 +362,7 @@ async def test_exact_and_near_duplicate_detection(
     assert near_matches[0].similarity_score >= 0.7
 
     # Verify d4 is never falsely flagged as a duplicate
-    d4_duplicates = [
-        c for c in report.candidates
-        if c.primary_document_id == d4.id or c.duplicate_document_id == d4.id
-    ]
+    d4_duplicates = [c for c in report.candidates if c.primary_document_id == d4.id or c.duplicate_document_id == d4.id]
     assert len(d4_duplicates) == 0
 
 
@@ -413,6 +417,7 @@ async def test_reindexing_preserves_active_version_on_failure(
 
     # Save mock file into storage so reindex can load it
     from app.infrastructure.storage.local_storage import LocalStorageProvider
+
     storage = LocalStorageProvider()
     await storage.save(b"Known-good production knowledge content.", doc.storage_key, doc.content_type)
 
@@ -548,6 +553,7 @@ async def test_concurrent_repair_prevention(
     repair_engine = KnowledgeBaseRepairEngine(db_session)
 
     from app.core.exceptions import AppError
+
     with pytest.raises(AppError) as exc_info:
         await repair_engine.execute_repair(
             knowledge_base_id=kb_user_a.id,
@@ -614,8 +620,12 @@ async def test_conservative_conflict_detection_preserves_provenance(
     )
     db_session.add_all([d1, d2])
 
-    v1 = DocumentVersion(id=uuid4(), document_id=d1.id, version_number=1, checksum=d1.checksum, storage_key="sk1", is_active=True)
-    v2 = DocumentVersion(id=uuid4(), document_id=d2.id, version_number=1, checksum=d2.checksum, storage_key="sk2", is_active=True)
+    v1 = DocumentVersion(
+        id=uuid4(), document_id=d1.id, version_number=1, checksum=d1.checksum, storage_key="sk1", is_active=True
+    )
+    v2 = DocumentVersion(
+        id=uuid4(), document_id=d2.id, version_number=1, checksum=d2.checksum, storage_key="sk2", is_active=True
+    )
     db_session.add_all([v1, v2])
 
     c1 = DocumentChunk(
@@ -636,7 +646,6 @@ async def test_conservative_conflict_detection_preserves_provenance(
     )
     db_session.add_all([c1, c2])
     await db_session.commit()
-
 
     engine = KnowledgeBaseConflictEngine(db_session)
     report = await engine.detect_conflicts(kb_user_a.id, user_a.id)
@@ -782,4 +791,3 @@ async def test_kb_repair_engine_chunker_initialization(db_session: AsyncSession)
     assert hasattr(repair_engine, "chunker")
     assert isinstance(repair_engine.chunker, DocumentChunker)
     assert repair_engine.chunker.chunk_char_size is not None
-

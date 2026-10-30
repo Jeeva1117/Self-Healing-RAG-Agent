@@ -334,9 +334,7 @@ class DataSourceService:
             for item in items
         ]
 
-    async def sync_data_source(
-        self, source_id: UUID, user_id: UUID, req: SyncRequest
-    ) -> SyncResponse:
+    async def sync_data_source(self, source_id: UUID, user_id: UUID, req: SyncRequest) -> SyncResponse:
         """Executes full extraction, normalization, chunking, and vector embedding into target KB."""
         ds = await self.ds_repo.get_by_id_and_user(source_id, user_id)
         if not ds:
@@ -425,7 +423,9 @@ class DataSourceService:
 
                     # Determine filename with valid extension
                     fname = norm_doc.filename
-                    if not any(fname.lower().endswith(f".{ext}") for ext in ["md", "txt", "html", "htm", "json", "csv"]):
+                    if not any(
+                        fname.lower().endswith(f".{ext}") for ext in ["md", "txt", "html", "htm", "json", "csv"]
+                    ):
                         fname = f"{fname}.md"
 
                     created_doc = await self.ingestion_service.validate_and_create_document(

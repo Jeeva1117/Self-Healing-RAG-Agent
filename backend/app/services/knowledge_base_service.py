@@ -169,5 +169,3 @@ class KnowledgeBaseService:
         await self.session.flush()
         await self.session.commit()
         logger.info("Knowledge Base deleted: id=%s with %d documents", kb_id, len(docs))
-
-

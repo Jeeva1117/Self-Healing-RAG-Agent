@@ -154,7 +154,9 @@ async def get_evaluation_run(
     case_results = [
         CaseEvaluationResult(
             test_case_id=c.test_case_id,
-            category=EvaluationCategory(c.category) if c.category in EvaluationCategory.__members__.values() else EvaluationCategory.ANSWERABLE,
+            category=EvaluationCategory(c.category)
+            if c.category in EvaluationCategory.__members__.values()
+            else EvaluationCategory.ANSWERABLE,
             passed=c.passed,
             status=c.status,
             failure_reasons=c.failure_reasons or [],
@@ -242,9 +244,7 @@ async def trigger_evaluation_run(
         if c.category in (EvaluationCategory.PERMISSION_BOUNDARY, EvaluationCategory.NON_RECOVERABLE_FAILURE):
             configured_cases.append(c)
         else:
-            configured_cases.append(
-                c.model_copy(update={"knowledge_base_id": kb_id})
-            )
+            configured_cases.append(c.model_copy(update={"knowledge_base_id": kb_id}))
 
     # 3. Execute runner
     runner = EvaluationRunner(session=session)
@@ -269,7 +269,11 @@ async def trigger_evaluation_run(
                 candidate=summary,
                 baseline=base_summary,
                 candidate_meta={"dataset_name": payload.dataset_name, "dataset_version": payload.dataset_version},
-                baseline_meta={"id": base_run.id, "dataset_name": base_run.dataset_name, "dataset_version": base_run.dataset_version},
+                baseline_meta={
+                    "id": base_run.id,
+                    "dataset_name": base_run.dataset_name,
+                    "dataset_version": base_run.dataset_version,
+                },
             )
 
     # 5. Persist run and case results

@@ -89,7 +89,9 @@ class RecoveryPolicy:
         if action == RecoveryAction.EXPAND_RETRIEVAL:
             params["candidate_limit"] = settings.RECOVERY_EXPANSION_CANDIDATE_LIMIT
             params["top_k"] = 8
-            reason = f"Attempt #{recovery_count + 1}: Expanding retrieval candidate depth to {params['candidate_limit']}."
+            reason = (
+                f"Attempt #{recovery_count + 1}: Expanding retrieval candidate depth to {params['candidate_limit']}."
+            )
 
         elif action == RecoveryAction.REWRITE_QUERY:
             reason = f"Attempt #{recovery_count + 1}: Reformulating query to enhance recall."
@@ -106,7 +108,7 @@ class RecoveryPolicy:
             reason = f"Attempt #{recovery_count + 1}: Controlled regeneration with verification feedback."
 
         elif action == RecoveryAction.RETRY_TRANSIENT:
-            backoff_s = settings.RECOVERY_BACKOFF_FACTOR * (2 ** recovery_count)
+            backoff_s = settings.RECOVERY_BACKOFF_FACTOR * (2**recovery_count)
             params["backoff_seconds"] = backoff_s
             reason = f"Attempt #{recovery_count + 1}: Transient error backoff ({backoff_s:.2f}s)."
 

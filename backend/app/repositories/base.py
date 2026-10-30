@@ -27,7 +27,6 @@ class BaseRepository(Generic[ModelType]):
         result = await self.session.execute(stmt)
         return result.scalars().first()
 
-
     async def list(self, skip: int = 0, limit: int = 100) -> Sequence[ModelType]:
         """Fetches a paginated slice of records."""
         stmt = select(self.model).offset(skip).limit(limit)

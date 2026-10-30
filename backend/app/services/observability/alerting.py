@@ -62,19 +62,14 @@ class AlertRule:
         now = time.time()
         if triggered:
             # Check cooldown deduplication
-            in_cooldown = (
-                self.last_triggered_at is not None
-                and (now - self.last_triggered_at) < self.cooldown_seconds
-            )
+            in_cooldown = self.last_triggered_at is not None and (now - self.last_triggered_at) < self.cooldown_seconds
 
             status = "cooldown" if in_cooldown else "active"
             if not in_cooldown:
                 self.last_triggered_at = now
 
             formatted_val = f"{val:.1%}" if "rate" in self.metric_key else str(val)
-            formatted_threshold = (
-                f"{self.threshold:.1%}" if "rate" in self.metric_key else str(self.threshold)
-            )
+            formatted_threshold = f"{self.threshold:.1%}" if "rate" in self.metric_key else str(self.threshold)
 
             return AlertRecord(
                 id=f"alt-{self.rule_id}",

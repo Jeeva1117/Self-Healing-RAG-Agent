@@ -1,6 +1,5 @@
 """Comprehensive automated test suite for Data Sources, Parsers, and External Connectors."""
 
-
 import pytest
 
 from app.schemas.data_source import mask_sensitive_config
@@ -179,12 +178,14 @@ def test_postgres_sql_injection_defense():
 
 def test_postgres_self_connect_protection():
     """Verifies internal database protection prevents self-connection."""
-    connector = PostgreSQLConnector({
-        "host": "127.0.0.1",
-        "port": 5432,
-        "database": "self_healing_rag",
-        "allow_self_connect": False,
-    })
+    connector = PostgreSQLConnector(
+        {
+            "host": "127.0.0.1",
+            "port": 5432,
+            "database": "self_healing_rag",
+            "allow_self_connect": False,
+        }
+    )
     assert connector._is_self_connection() is True
 
 

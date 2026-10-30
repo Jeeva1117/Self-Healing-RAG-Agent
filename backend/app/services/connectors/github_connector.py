@@ -18,31 +18,88 @@ logger = get_logger(__name__)
 
 # Patterns of files strictly excluded for security and cleanliness
 EXCLUDED_PATTERNS = {
-    ".env", ".env.local", ".env.production",
-    "id_rsa", "id_ed25519", "id_dsa",
-    ".git", ".github",
-    "node_modules", "vendor", "__pycache__", ".venv", "venv",
+    ".env",
+    ".env.local",
+    ".env.production",
+    "id_rsa",
+    "id_ed25519",
+    "id_dsa",
+    ".git",
+    ".github",
+    "node_modules",
+    "vendor",
+    "__pycache__",
+    ".venv",
+    "venv",
 }
 
 EXCLUDED_EXTENSIONS = {
-    ".pem", ".key", ".pfx", ".p12", ".exe", ".dll", ".so", ".dylib",
-    ".zip", ".tar", ".gz", ".7z", ".png", ".jpg", ".jpeg", ".gif",
-    ".svg", ".ico", ".woff", ".woff2", ".ttf", ".eot", ".mp4", ".mp3",
-    ".pyc", ".pyo", ".class", ".jar",
+    ".pem",
+    ".key",
+    ".pfx",
+    ".p12",
+    ".exe",
+    ".dll",
+    ".so",
+    ".dylib",
+    ".zip",
+    ".tar",
+    ".gz",
+    ".7z",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".svg",
+    ".ico",
+    ".woff",
+    ".woff2",
+    ".ttf",
+    ".eot",
+    ".mp4",
+    ".mp3",
+    ".pyc",
+    ".pyo",
+    ".class",
+    ".jar",
 }
 
 SUPPORTED_CODE_DOC_EXTENSIONS = {
-    ".md", ".markdown", ".txt", ".rst", ".adoc",
-    ".py", ".ts", ".tsx", ".js", ".jsx", ".html",
-    ".json", ".yaml", ".yml", ".toml", ".sql", ".sh",
-    ".java", ".go", ".rs", ".c", ".cpp", ".h", ".cs", ".rb", ".php",
+    ".md",
+    ".markdown",
+    ".txt",
+    ".rst",
+    ".adoc",
+    ".py",
+    ".ts",
+    ".tsx",
+    ".js",
+    ".jsx",
+    ".html",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".toml",
+    ".sql",
+    ".sh",
+    ".java",
+    ".go",
+    ".rs",
+    ".c",
+    ".cpp",
+    ".h",
+    ".cs",
+    ".rb",
+    ".php",
 }
 
 SECRET_PATTERNS = [
     re.compile(r"ghp_[a-zA-Z0-9]{36}"),
     re.compile(r"github_pat_[a-zA-Z0-9_]{82}"),
     re.compile(r"AKIA[0-9A-Z]{16}"),
-    re.compile(r"-----BEGIN (?:RSA|EC|OPENSSH|DSA|PGP)? PRIVATE KEY-----[\s\S]*?-----END (?:RSA|EC|OPENSSH|DSA|PGP)? PRIVATE KEY-----"),
+    re.compile(
+        r"-----BEGIN (?:RSA|EC|OPENSSH|DSA|PGP)? PRIVATE KEY-----[\s\S]*?-----END (?:RSA|EC|OPENSSH|DSA|PGP)? PRIVATE KEY-----"
+    ),
     re.compile(r"(?:api_key|secret_key|jwt_secret)\s*[:=]\s*['\"][^\s'\"]{8,}['\"]", re.IGNORECASE),
 ]
 
@@ -63,10 +120,7 @@ class GitHubConnector(BaseConnector):
     def __init__(self, config: dict[str, Any]):
         super().__init__(config)
         self.token = (
-            config.get("personal_access_token")
-            or config.get("access_token")
-            or config.get("token")
-            or ""
+            config.get("personal_access_token") or config.get("access_token") or config.get("token") or ""
         ).strip()
         self.repo = (config.get("repository") or config.get("repo") or "").strip()  # "owner/repo"
         self.branch = (config.get("branch") or "main").strip()

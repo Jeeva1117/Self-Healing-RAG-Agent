@@ -52,10 +52,14 @@ def route_after_recovery(state: AgenticRAGState) -> str:
     max_retries = state.get("max_retries", 1)
     failure_cat = state.get("failure_category")
 
-    if action in (
-        RecoveryAction.TERMINATE_INSUFFICIENT.value,
-        RecoveryAction.TERMINATE_NON_RECOVERABLE.value,
-    ) or retry_count > max_retries:
+    if (
+        action
+        in (
+            RecoveryAction.TERMINATE_INSUFFICIENT.value,
+            RecoveryAction.TERMINATE_NON_RECOVERABLE.value,
+        )
+        or retry_count > max_retries
+    ):
         return "finalize"
 
     if action in (

@@ -187,4 +187,3 @@ class VectorRetriever:
             retrieved_items.append(item)
 
         return retrieved_items
-

@@ -259,4 +259,3 @@ def test_chunker_numbered_section_detection():
     assert len(chunks) >= 2
     assert any("Introduction to Algorithms" in c.section_title or "Introduction" in c.content for c in chunks)
     assert any("Dynamic Programming" in c.section_title or "Dynamic" in c.content for c in chunks)
-

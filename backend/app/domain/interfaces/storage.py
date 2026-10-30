@@ -57,4 +57,3 @@ class ObjectStorageInterface(ABC):
     async def exists(self, key: str) -> bool:
         """Convenience method checking object presence in default documents bucket."""
         return await self.file_exists("documents", key)
-

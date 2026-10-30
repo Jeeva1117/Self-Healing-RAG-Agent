@@ -153,6 +153,7 @@ class GroqProvider(LLMProviderInterface):
                         logger.warning("Groq rate limit exceeded (HTTP 429): %s", error_body)
                         if attempt < self.max_retries:
                             import asyncio
+
                             await asyncio.sleep(min(1.0 * (attempt + 1), 2.5))
                             continue
                         raise AppError(
@@ -173,6 +174,7 @@ class GroqProvider(LLMProviderInterface):
                     # 5xx server error: retry
                     if res.status_code >= 500 and attempt < self.max_retries:
                         import asyncio
+
                         await asyncio.sleep(0.5 * (attempt + 1))
                         continue
 
@@ -188,6 +190,7 @@ class GroqProvider(LLMProviderInterface):
                 logger.warning("Groq request timed out (attempt %d/%d)", attempt + 1, self.max_retries + 1)
                 if attempt < self.max_retries:
                     import asyncio
+
                     await asyncio.sleep(0.5)
                     continue
                 raise AppError(
@@ -205,6 +208,7 @@ class GroqProvider(LLMProviderInterface):
                 logger.error("Unexpected error during Groq API call: %s", redacted_msg)
                 if attempt < self.max_retries:
                     import asyncio
+
                     await asyncio.sleep(0.5)
                     continue
                 raise AppError(

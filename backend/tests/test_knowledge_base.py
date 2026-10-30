@@ -197,10 +197,9 @@ def test_text_normalizer():
 
 def test_intelligent_chunker():
     """Test 10: Chunker produces structure-aware chunks with citation metadata."""
-    content = (
-        "## Section 1\n" + ("This is paragraph content describing RAG architecture. " * 30) + "\n\n"
-        "## Section 2\n" + ("Second section content detailing embeddings and retrieval. " * 30)
-    )
+    content = "## Section 1\n" + (
+        "This is paragraph content describing RAG architecture. " * 30
+    ) + "\n\n" "## Section 2\n" + ("Second section content detailing embeddings and retrieval. " * 30)
     parser = MarkdownParser()
     parsed_doc = parser.parse(content.encode(), "doc.md")
 
@@ -260,7 +259,6 @@ async def test_upload_and_ingest_txt_document(
     await ingestion.run_ingestion_pipeline(uuid4())  # non-existent doc handled gracefully
     await ingestion.run_ingestion_pipeline(doc_id)
 
-
     # Verify document status is READY
     doc_res = await client.get(f"/api/v1/documents/{doc_id}", headers=auth_headers_user_a)
     assert doc_res.status_code == 200
@@ -297,12 +295,9 @@ async def test_duplicate_upload_rejection(
 
     # Second upload with identical bytes fails with 409
     files2 = {"file": ("another_name.txt", io.BytesIO(file_bytes), "text/plain")}
-    res2 = await client.post(
-        f"/api/v1/knowledge-bases/{kb_id}/documents", files=files2, headers=auth_headers_user_a
-    )
+    res2 = await client.post(f"/api/v1/knowledge-bases/{kb_id}/documents", files=files2, headers=auth_headers_user_a)
     assert res2.status_code == 409
     assert res2.json()["error"]["code"] == "DUPLICATE_DOCUMENT"
-
 
 
 @pytest.mark.asyncio
@@ -368,8 +363,6 @@ async def test_document_reprocessing(
     assert count_after == count_before
 
 
-
-
 @pytest.mark.asyncio
 async def test_delete_document_cleans_resources(
     client: AsyncClient,
@@ -420,7 +413,6 @@ async def test_cascade_delete_knowledge_base(
     # Delete Knowledge Base
     del_kb_res = await client.delete(f"/api/v1/knowledge-bases/{kb_id}", headers=auth_headers_user_a)
     assert del_kb_res.status_code == 200
-
 
     # Knowledge Base and documents must be gone
     get_kb = await client.get(f"/api/v1/knowledge-bases/{kb_id}", headers=auth_headers_user_a)

@@ -201,9 +201,13 @@ class NotionConnector(BaseConnector):
                                     for prop_name, prop_val in row.get("properties", {}).items():
                                         p_type = prop_val.get("type")
                                         if p_type == "title":
-                                            row_props.append(f"{prop_name}: {_extract_rich_text(prop_val.get('title', []))}")
+                                            row_props.append(
+                                                f"{prop_name}: {_extract_rich_text(prop_val.get('title', []))}"
+                                            )
                                         elif p_type == "rich_text":
-                                            row_props.append(f"{prop_name}: {_extract_rich_text(prop_val.get('rich_text', []))}")
+                                            row_props.append(
+                                                f"{prop_name}: {_extract_rich_text(prop_val.get('rich_text', []))}"
+                                            )
                                         elif p_type == "select" and prop_val.get("select"):
                                             row_props.append(f"{prop_name}: {prop_val['select'].get('name')}")
                                     if row_props:

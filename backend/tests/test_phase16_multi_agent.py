@@ -191,6 +191,7 @@ async def multi_agent_env(db_session: AsyncSession, user_a: User, user_b: User):
 # Unit Tests: Individual Specialized Agent Nodes
 # ======================================================================
 
+
 @pytest.mark.asyncio
 async def test_agent1_query_understanding(db_session: AsyncSession):
     """Test Agent 1: Query Understanding Agent intent, entity extraction, and ambiguity classification."""
@@ -393,9 +394,7 @@ async def test_agent5_verification_agent_audit(db_session: AsyncSession, multi_a
 async def test_agent6_response_generation_agent(db_session: AsyncSession, multi_agent_env):
     """Test Agent 6: Response Generation Agent synthesizes grounded answer with valid citations."""
     retrieval_svc = RetrievalService(db_session)
-    mock_llm = MockCollaborativeLLM(
-        canned_response="Python lists are mutable sequences [1] with O(1) lookup time."
-    )
+    mock_llm = MockCollaborativeLLM(canned_response="Python lists are mutable sequences [1] with O(1) lookup time.")
     nodes = CollaborativeAgentNodes(db_session, retrieval_svc, mock_llm)
 
     chunk_1 = multi_agent_env["chunk_1"]
@@ -459,6 +458,7 @@ async def test_agent7_supervisor_coordinator(db_session: AsyncSession, multi_age
 # Integration Tests: End-to-End Collaborative LangGraph Orchestrator
 # ======================================================================
 
+
 @pytest.mark.asyncio
 async def test_e2e_collaborative_orchestrator_success(db_session: AsyncSession, multi_agent_env, user_a: User):
     """Test full multi-agent collaborative execution with all 7 specialized roles collaborating."""
@@ -508,7 +508,9 @@ async def test_e2e_collaborative_orchestrator_success(db_session: AsyncSession, 
 
 
 @pytest.mark.asyncio
-async def test_collaborative_orchestrator_insufficient_evidence(db_session: AsyncSession, multi_agent_env, user_a: User):
+async def test_collaborative_orchestrator_insufficient_evidence(
+    db_session: AsyncSession, multi_agent_env, user_a: User
+):
     """Test collaborative orchestrator abstains and halts cleanly on out-of-domain query."""
     kb_a = multi_agent_env["kb_a"]
     retrieval_svc = RetrievalService(db_session)
@@ -536,6 +538,7 @@ async def test_collaborative_orchestrator_insufficient_evidence(db_session: Asyn
 # ======================================================================
 # Security & Authorization Tests: Cross-Tenant Isolation
 # ======================================================================
+
 
 @pytest.mark.asyncio
 async def test_collaborative_cross_tenant_isolation(

@@ -22,14 +22,14 @@ logger = get_logger(__name__)
 
 # Private and cloud metadata IP subnets prohibited for SSRF protection
 BLOCKED_IP_NETWORKS = [
-    ipaddress.ip_network("127.0.0.0/8"),       # Loopback
-    ipaddress.ip_network("10.0.0.0/8"),        # Private RFC 1918
-    ipaddress.ip_network("172.16.0.0/12"),     # Private RFC 1918
-    ipaddress.ip_network("192.168.0.0/16"),    # Private RFC 1918
-    ipaddress.ip_network("169.254.0.0/16"),    # Link-local & AWS/GCP/Azure Metadata
-    ipaddress.ip_network("::1/128"),           # IPv6 loopback
-    ipaddress.ip_network("fc00::/7"),          # IPv6 ULA
-    ipaddress.ip_network("fe80::/10"),         # IPv6 Link-local
+    ipaddress.ip_network("127.0.0.0/8"),  # Loopback
+    ipaddress.ip_network("10.0.0.0/8"),  # Private RFC 1918
+    ipaddress.ip_network("172.16.0.0/12"),  # Private RFC 1918
+    ipaddress.ip_network("192.168.0.0/16"),  # Private RFC 1918
+    ipaddress.ip_network("169.254.0.0/16"),  # Link-local & AWS/GCP/Azure Metadata
+    ipaddress.ip_network("::1/128"),  # IPv6 loopback
+    ipaddress.ip_network("fc00::/7"),  # IPv6 ULA
+    ipaddress.ip_network("fe80::/10"),  # IPv6 Link-local
 ]
 
 BLOCKED_HOSTNAMES = {
@@ -129,12 +129,7 @@ class WebScraperConnector(BaseConnector):
 
     def __init__(self, config: dict[str, Any]):
         super().__init__(config)
-        self.base_url = (
-            config.get("root_url")
-            or config.get("url")
-            or config.get("base_url")
-            or ""
-        ).strip()
+        self.base_url = (config.get("root_url") or config.get("url") or config.get("base_url") or "").strip()
         self.max_pages = min(int(config.get("max_pages", 10)), 50)
         self.max_depth = min(int(config.get("max_depth", 2)), 3)
         self.timeout = float(config.get("timeout", 10.0))

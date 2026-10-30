@@ -122,11 +122,7 @@ class CollaborativeAgentOrchestrator:
         """Executes the typed, collaborative multi-agent LangGraph workflow."""
         t_start = time.perf_counter()
         effective_max_retries = max_retries if max_retries is not None else 1
-        effective_deadline = (
-            deadline
-            if deadline is not None
-            else (time.time() + settings.RECOVERY_TIMEOUT_SECONDS)
-        )
+        effective_deadline = deadline if deadline is not None else (time.time() + settings.RECOVERY_TIMEOUT_SECONDS)
 
         # 1. Initialize distributed trace
         trace = Tracer.start_trace(

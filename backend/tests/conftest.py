@@ -138,4 +138,3 @@ def auth_headers_user_a(user_a: User) -> dict[str, str]:
 def auth_headers_user_b(user_b: User) -> dict[str, str]:
     token = create_access_token(user_id=user_b.id, role=user_b.role)
     return {"Authorization": f"Bearer {token}"}
-

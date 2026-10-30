@@ -131,4 +131,3 @@ class DocumentRepository(BaseRepository[Document]):
         result = await self.session.execute(stmt)
         await self.session.flush()
         return result.rowcount
-

@@ -89,7 +89,9 @@ class JSONParser(DocumentParser):
                             for idx, sub_item in enumerate(batch, start=i + 1):
                                 batch_lines.append(f"Item #{idx}:")
                                 for sk, sv in sub_item.items():
-                                    val_str = json.dumps(sv, ensure_ascii=False) if isinstance(sv, dict | list) else str(sv)
+                                    val_str = (
+                                        json.dumps(sv, ensure_ascii=False) if isinstance(sv, dict | list) else str(sv)
+                                    )
                                     batch_lines.append(f"  {sk}: {val_str}")
                             units.append(
                                 ParsedUnit(

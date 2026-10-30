@@ -75,8 +75,10 @@ class AnswerVerifier:
         # Check keyword stem alignment
         query_words = re.findall(r"\b[a-zA-Z0-9_]{3,}\b", query.lower())
         focal_query_words = [
-            w for w in query_words
-            if w not in {"what", "which", "when", "where", "how", "explain", "tell", "show", "from", "with", "this", "that"}
+            w
+            for w in query_words
+            if w
+            not in {"what", "which", "when", "where", "how", "explain", "tell", "show", "from", "with", "this", "that"}
         ]
 
         if focal_query_words:
@@ -93,10 +95,39 @@ class AnswerVerifier:
         answer_clean = re.sub(r"\[\d+\]", " ", answer.lower())
         answer_tokens = re.findall(r"\b[a-zA-Z0-9_]{4,}\b", answer_clean)
         stopwords = {
-            "what", "which", "when", "where", "that", "this", "these", "those", "from",
-            "with", "about", "into", "through", "during", "before", "after", "above",
-            "below", "have", "been", "were", "they", "their", "there", "would", "could",
-            "should", "does", "also", "only", "other", "some", "such",
+            "what",
+            "which",
+            "when",
+            "where",
+            "that",
+            "this",
+            "these",
+            "those",
+            "from",
+            "with",
+            "about",
+            "into",
+            "through",
+            "during",
+            "before",
+            "after",
+            "above",
+            "below",
+            "have",
+            "been",
+            "were",
+            "they",
+            "their",
+            "there",
+            "would",
+            "could",
+            "should",
+            "does",
+            "also",
+            "only",
+            "other",
+            "some",
+            "such",
         }
         focal_answer_tokens = [t for t in answer_tokens if t not in stopwords and not t.isdigit()]
         if len(focal_answer_tokens) >= 5:

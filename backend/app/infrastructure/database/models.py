@@ -411,9 +411,7 @@ class EvaluationCaseResultRecord(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     # Relationships
     run: Mapped["EvaluationRun"] = relationship("EvaluationRun", back_populates="case_results", lazy="joined")
 
-    __table_args__ = (
-        Index("ix_case_results_run_category", "run_id", "category"),
-    )
+    __table_args__ = (Index("ix_case_results_run_category", "run_id", "category"),)
 
     def __repr__(self) -> str:
         return f"<EvaluationCaseResultRecord id={self.id} case={self.test_case_id} passed={self.passed}>"
@@ -506,9 +504,7 @@ class TraceSpanRecord(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     # Relationships
     trace: Mapped["ExecutionTrace"] = relationship("ExecutionTrace", back_populates="spans", lazy="joined")
 
-    __table_args__ = (
-        Index("ix_trace_spans_trace_step", "trace_id", "step_type"),
-    )
+    __table_args__ = (Index("ix_trace_spans_trace_step", "trace_id", "step_type"),)
 
     def __repr__(self) -> str:
         return f"<TraceSpanRecord id={self.id} span_id={self.span_id} name={self.name} duration_ms={self.duration_ms}>"
@@ -619,11 +615,7 @@ class DataSource(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     user: Mapped["User"] = relationship("User", lazy="select")
     knowledge_base: Mapped["KnowledgeBase | None"] = relationship("KnowledgeBase", lazy="select")
 
-    __table_args__ = (
-        Index("ix_data_sources_user_type", "user_id", "source_type"),
-    )
+    __table_args__ = (Index("ix_data_sources_user_type", "user_id", "source_type"),)
 
     def __repr__(self) -> str:
         return f"<DataSource id={self.id} type={self.source_type} name={self.name} status={self.status}>"
-
-

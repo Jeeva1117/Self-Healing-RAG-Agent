@@ -200,12 +200,14 @@ class EvaluationDatasetRegistry:
             for ver, cases in versions.items():
                 if name == DEFAULT_DATASET_NAME and ver == DEFAULT_DATASET_VERSION:
                     continue
-                datasets.append({
-                    "name": name,
-                    "version": ver,
-                    "case_count": len(cases),
-                    "description": f"Custom test suite {name} (v{ver})",
-                })
+                datasets.append(
+                    {
+                        "name": name,
+                        "version": ver,
+                        "case_count": len(cases),
+                        "description": f"Custom test suite {name} (v{ver})",
+                    }
+                )
         return datasets
 
 

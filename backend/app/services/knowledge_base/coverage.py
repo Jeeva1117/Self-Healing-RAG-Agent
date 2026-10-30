@@ -33,10 +33,7 @@ def _extract_top_score(retrieval_scores: object) -> float | None:
         for item in retrieval_scores:
             if isinstance(item, dict):
                 score = (
-                    item.get("rerank_score")
-                    or item.get("rrf_score")
-                    or item.get("vector_score")
-                    or item.get("score")
+                    item.get("rerank_score") or item.get("rrf_score") or item.get("vector_score") or item.get("score")
                 )
                 if isinstance(score, int | float):
                     scores.append(float(score))
@@ -137,13 +134,10 @@ class KnowledgeBaseCoverageEngine:
             )
 
         # 3. Identify unretrieved documents
-        doc_stmt = (
-            select(Document.id, Document.filename)
-            .where(
-                Document.knowledge_base_id == knowledge_base_id,
-                Document.owner_id == user_id,
-                Document.status == DocumentStatus.READY,
-            )
+        doc_stmt = select(Document.id, Document.filename).where(
+            Document.knowledge_base_id == knowledge_base_id,
+            Document.owner_id == user_id,
+            Document.status == DocumentStatus.READY,
         )
         doc_res = await self.session.execute(doc_stmt)
         docs = doc_res.all()

@@ -101,6 +101,7 @@ async def test_storage_cleanup_on_persistence_failure(
     """If database record creation fails, the staged file in storage is cleaned up."""
     # Create KB
     from app.infrastructure.database.models import KnowledgeBase
+
     kb = KnowledgeBase(
         owner_id=user_a.id,
         name="Rollback Test KB",
@@ -153,5 +154,9 @@ async def test_observability_safe_during_flush():
     assert not mock_session.add.called
 
     # But trace is still reliably recorded in the in-memory circular buffer
-    buffered = ObservabilityService.getBufferedTraces() if hasattr(ObservabilityService, "getBufferedTraces") else ObservabilityService.get_buffered_traces()
+    buffered = (
+        ObservabilityService.getBufferedTraces()
+        if hasattr(ObservabilityService, "getBufferedTraces")
+        else ObservabilityService.get_buffered_traces()
+    )
     assert any(t.trace_id == "test-trace-flushing-123" for t in buffered)

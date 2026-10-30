@@ -130,9 +130,7 @@ class MetricsCalculator:
             return round(sum(values) / len(values), 2) if values else None
 
         stage_breakdown = {
-            st: round(stage_totals[st] / stage_counts[st], 2)
-            for st in stage_totals
-            if stage_counts.get(st, 0) > 0
+            st: round(stage_totals[st] / stage_counts[st], 2) for st in stage_totals if stage_counts.get(st, 0) > 0
         }
 
         error_rate = round(failed / total, 4) if total > 0 else 0.0

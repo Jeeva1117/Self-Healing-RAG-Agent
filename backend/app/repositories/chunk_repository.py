@@ -48,7 +48,6 @@ class ChunkRepository(BaseRepository[DocumentChunk]):
         res = await self.session.execute(stmt)
         return res.scalar_one() or 0
 
-
     async def list_by_document(
         self, document_id: UUID | str, offset: int = 0, limit: int = 50
     ) -> tuple[list[DocumentChunk], int]:

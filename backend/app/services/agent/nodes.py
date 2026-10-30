@@ -47,16 +47,83 @@ logger = get_logger(__name__)
 MAX_CONTEXT_CHARACTERS = 14000
 
 STOP_WORDS = {
-    "a", "an", "the", "in", "on", "at", "to", "for", "of", "and", "or", "is", "are", "was",
-    "were", "be", "been", "being", "have", "has", "had", "do", "does", "did", "what", "which",
-    "who", "whom", "this", "that", "these", "those", "how", "why", "when", "where", "can",
-    "could", "should", "would", "explain", "describe", "tell", "show", "me", "about", "with",
-    "from", "by", "as", "into", "through", "during", "before", "after", "above", "below",
+    "a",
+    "an",
+    "the",
+    "in",
+    "on",
+    "at",
+    "to",
+    "for",
+    "of",
+    "and",
+    "or",
+    "is",
+    "are",
+    "was",
+    "were",
+    "be",
+    "been",
+    "being",
+    "have",
+    "has",
+    "had",
+    "do",
+    "does",
+    "did",
+    "what",
+    "which",
+    "who",
+    "whom",
+    "this",
+    "that",
+    "these",
+    "those",
+    "how",
+    "why",
+    "when",
+    "where",
+    "can",
+    "could",
+    "should",
+    "would",
+    "explain",
+    "describe",
+    "tell",
+    "show",
+    "me",
+    "about",
+    "with",
+    "from",
+    "by",
+    "as",
+    "into",
+    "through",
+    "during",
+    "before",
+    "after",
+    "above",
+    "below",
 }
 
 VAGUE_SINGLE_WORDS = {
-    "what", "why", "how", "who", "when", "where", "help", "hello", "hi", "hey",
-    "explain", "tell", "info", "details", "more", "question", "test",
+    "what",
+    "why",
+    "how",
+    "who",
+    "when",
+    "where",
+    "help",
+    "hello",
+    "hi",
+    "hey",
+    "explain",
+    "tell",
+    "info",
+    "details",
+    "more",
+    "question",
+    "test",
 }
 
 POLICY_OR_INTERNAL_PATTERNS = [
@@ -125,6 +192,7 @@ class AgenticNodes:
         # Phase 10: Record execution span on active trace
         try:
             from app.services.observability.tracer import Tracer
+
             Tracer.record_manual_span(
                 name=name,
                 step_type=step_id,
@@ -267,11 +335,7 @@ class AgenticNodes:
         action_history = list(state.get("action_history", []))
         query_history = list(state.get("query_history", []))
         recovery_history = list(state.get("recovery_history", []))
-        current_query = (
-            state.get("current_query")
-            or state.get("normalized_query")
-            or state.get("original_query", "")
-        )
+        current_query = state.get("current_query") or state.get("normalized_query") or state.get("original_query", "")
 
         # 1. Determine failure category and diagnosis
         failure_cat_str = state.get("failure_category")
@@ -449,7 +513,9 @@ class AgenticNodes:
             candidate_limit = 45 if is_topic_listing else 35
             top_k = 10 if is_topic_listing else 8
             enable_reranking = True
-            strategy_reason = f"Bounded retry #{retry_count}: Expanded candidate depth to {candidate_limit} for broader recall"
+            strategy_reason = (
+                f"Bounded retry #{retry_count}: Expanded candidate depth to {candidate_limit} for broader recall"
+            )
 
         duration_ms = (time.perf_counter() - t0) * 1000.0
         steps = self._append_event(
@@ -475,11 +541,7 @@ class AgenticNodes:
         t0 = time.perf_counter()
         kb_id = state["knowledge_base_id"]
         user_id = state["user_id"]
-        query = (
-            state.get("current_query")
-            or state.get("normalized_query")
-            or state.get("original_query", "")
-        )
+        query = state.get("current_query") or state.get("normalized_query") or state.get("original_query", "")
         strategy_str = state.get("retrieval_strategy", "hybrid")
 
         mode = RetrievalMode.HYBRID
@@ -515,6 +577,7 @@ class AgenticNodes:
             # Phase 10: Record sub-spans for individual retrieval stages
             try:
                 from app.services.observability.tracer import Tracer
+
                 Tracer.record_manual_span(
                     name="Dense Semantic Retrieval",
                     step_type="dense_retrieval",
@@ -605,16 +668,46 @@ class AgenticNodes:
         else:
             # Check substantive focal keyword relevance overlap
             GENERIC_QUERY_TERMS = {
-                "example", "examples", "sample", "samples", "simple", "terms",
-                "code", "snippet", "overview", "definition", "meaning", "detail",
-                "details", "best", "guide", "tutorial", "please", "write", "give",
+                "example",
+                "examples",
+                "sample",
+                "samples",
+                "simple",
+                "terms",
+                "code",
+                "snippet",
+                "overview",
+                "definition",
+                "meaning",
+                "detail",
+                "details",
+                "best",
+                "guide",
+                "tutorial",
+                "please",
+                "write",
+                "give",
             }
             substantive_terms = [t for t in terms if t not in GENERIC_QUERY_TERMS]
             eval_terms = substantive_terms or terms
 
             COMMON_LANGS = {
-                "python", "javascript", "js", "typescript", "ts", "java", "c",
-                "cpp", "csharp", "ruby", "go", "rust", "php", "sql", "html", "css",
+                "python",
+                "javascript",
+                "js",
+                "typescript",
+                "ts",
+                "java",
+                "c",
+                "cpp",
+                "csharp",
+                "ruby",
+                "go",
+                "rust",
+                "php",
+                "sql",
+                "html",
+                "css",
             }
             focal_terms = [t for t in eval_terms if t not in COMMON_LANGS]
             search_terms = focal_terms if focal_terms else eval_terms
@@ -631,7 +724,9 @@ class AgenticNodes:
                 evidence_reason = f"Confirmed relevant evidence across {len(results)} scoped chunks."
             else:
                 diagnosis = FailureClassifier.classify_retrieval(results=results, query=query, terms=terms)
-                evidence_status = "low_relevance" if diagnosis.category == FailureCategory.LOW_RELEVANCE_EVIDENCE else "insufficient"
+                evidence_status = (
+                    "low_relevance" if diagnosis.category == FailureCategory.LOW_RELEVANCE_EVIDENCE else "insufficient"
+                )
                 evidence_reason = diagnosis.reason
                 failure_cat = diagnosis.category.value
                 failure_reason = diagnosis.reason
@@ -797,7 +892,7 @@ class AgenticNodes:
                 f"Answer the user's inquiry strictly based on the above reference material. "
                 f"Every claim based on reference material must cite the source using [1], [2] format. "
                 f"Do not simply paste raw text; synthesize a clear, natural, and well-structured answer. "
-                f"If the information is absent, respond with:\n\"{INSUFFICIENT_EVIDENCE_SENTENCE}\""
+                f'If the information is absent, respond with:\n"{INSUFFICIENT_EVIDENCE_SENTENCE}"'
             )
 
             rec_feedback = state.get("verification_feedback")
@@ -885,7 +980,7 @@ class AgenticNodes:
         results = state.get("retrieval_results", [])
         is_insufficient = state.get("is_insufficient_evidence", False)
         answer_mode = state.get("answer_mode", "document_grounded")
-        is_general = (answer_mode == "general")
+        is_general = answer_mode == "general"
 
         if is_insufficient:
             sanitized_answer = INSUFFICIENT_EVIDENCE_SENTENCE
@@ -945,7 +1040,7 @@ class AgenticNodes:
         retrieved_chunks = state.get("retrieval_results", [])
         is_insufficient = state.get("is_insufficient_evidence", False)
         answer_mode = state.get("answer_mode", "document_grounded")
-        is_general = (answer_mode == "general")
+        is_general = answer_mode == "general"
 
         passed, feedback = AnswerVerifier.verify(
             query=query,
@@ -1021,14 +1116,11 @@ class AgenticNodes:
         evidence_status = state.get("evidence_status", "")
         recovery_action = state.get("recovery_action", "")
         answer_mode = state.get("answer_mode", "document_grounded")
-        is_general = (answer_mode == "general")
-        is_insufficient = (
-            not is_general
-            and (
-                state.get("is_insufficient_evidence", False)
-                or evidence_status in ("insufficient", "low_relevance")
-                or recovery_action == RecoveryAction.TERMINATE_INSUFFICIENT.value
-            )
+        is_general = answer_mode == "general"
+        is_insufficient = not is_general and (
+            state.get("is_insufficient_evidence", False)
+            or evidence_status in ("insufficient", "low_relevance")
+            or recovery_action == RecoveryAction.TERMINATE_INSUFFICIENT.value
         )
         exec_status = state.get("execution_status", ChatResponseStatus.ANSWERED)
         verification_passed = state.get("verification_passed", True)
@@ -1053,7 +1145,10 @@ class AgenticNodes:
         elif exec_status == ChatResponseStatus.RETRIEVAL_ERROR or evidence_status == "retrieval_error":
             verification_status = "unverified"
             answer_type = "retrieval_error"
-            answer_content = state.get("raw_answer") or f"⚠️ Retrieval execution error: {state.get('error_message', 'Unknown failure')}"
+            answer_content = (
+                state.get("raw_answer")
+                or f"⚠️ Retrieval execution error: {state.get('error_message', 'Unknown failure')}"
+            )
             status = ChatResponseStatus.RETRIEVAL_ERROR
             citations = []
             sources = []
@@ -1075,9 +1170,8 @@ class AgenticNodes:
             sources = []
             claim_citations = []
         elif (
-            (state.get("recovery_count", 0) > 0 or state.get("retry_count", 0) > 0 or state.get("is_recovered", False))
-            and not is_insufficient
-        ):
+            state.get("recovery_count", 0) > 0 or state.get("retry_count", 0) > 0 or state.get("is_recovered", False)
+        ) and not is_insufficient:
             verification_status = "grounded_evidence"
             answer_type = "document_grounded"
             answer_content = state.get("sanitized_answer") or state.get("raw_answer", "")
@@ -1112,9 +1206,7 @@ class AgenticNodes:
                 recovery_action=state.get("recovery_action"),
                 recovery_outcome=outcome,
                 rewritten_query=(
-                    state.get("current_query")
-                    if state.get("current_query") != state.get("original_query")
-                    else None
+                    state.get("current_query") if state.get("current_query") != state.get("original_query") else None
                 ),
                 termination_reason=state.get("failure_reason"),
             )

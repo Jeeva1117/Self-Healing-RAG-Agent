@@ -46,16 +46,74 @@ from app.services.retrieval.retrieval_service import RetrievalService
 logger = get_logger(__name__)
 
 STOP_WORDS = {
-    "a", "an", "the", "in", "on", "at", "to", "for", "of", "and", "or", "is", "are", "was",
-    "were", "be", "been", "being", "have", "has", "had", "do", "does", "did", "what", "which",
-    "who", "whom", "this", "that", "these", "those", "how", "why", "when", "where", "can",
-    "could", "should", "would", "explain", "describe", "tell", "show", "me", "about", "with",
-    "from", "by", "as", "into", "through", "during", "before", "after", "above", "below",
+    "a",
+    "an",
+    "the",
+    "in",
+    "on",
+    "at",
+    "to",
+    "for",
+    "of",
+    "and",
+    "or",
+    "is",
+    "are",
+    "was",
+    "were",
+    "be",
+    "been",
+    "being",
+    "have",
+    "has",
+    "had",
+    "do",
+    "does",
+    "did",
+    "what",
+    "which",
+    "who",
+    "whom",
+    "this",
+    "that",
+    "these",
+    "those",
+    "how",
+    "why",
+    "when",
+    "where",
+    "can",
+    "could",
+    "should",
+    "would",
+    "explain",
+    "describe",
+    "tell",
+    "show",
+    "me",
+    "about",
+    "with",
+    "from",
+    "by",
+    "as",
+    "into",
+    "through",
+    "during",
+    "before",
+    "after",
+    "above",
+    "below",
 }
 
 VAGUE_PHRASES = {
-    "tell me about that thing", "what is it", "tell me about it", "explain that",
-    "help me with this", "show it", "more details", "what about that",
+    "tell me about that thing",
+    "what is it",
+    "tell me about it",
+    "explain that",
+    "help me with this",
+    "show it",
+    "more details",
+    "what about that",
 }
 
 
@@ -207,11 +265,7 @@ class CollaborativeAgentNodes:
         entities = state.get("query_entities", [])
 
         # Check complexity: multi-topic / comparative / multi-clause
-        is_complex = (
-            intent in ("comparative", "summary")
-            or " and " in query.lower()
-            or len(entities) >= 4
-        )
+        is_complex = intent in ("comparative", "summary") or " and " in query.lower() or len(entities) >= 4
 
         subtasks: list[ResearchSubtask] = []
 
@@ -330,9 +384,7 @@ class CollaborativeAgentNodes:
         all_candidates = list(merged_chunks.values())
         all_candidates.sort(key=lambda x: x.reranker_score or 0.0, reverse=True)
 
-        coverage_ratio = (
-            covered_subtasks / len(subtasks_data) if subtasks_data else 0.0
-        )
+        coverage_ratio = covered_subtasks / len(subtasks_data) if subtasks_data else 0.0
         duration_ms = (time.perf_counter() - t0) * 1000.0
 
         desc = f"Retrieved {len(all_candidates)} unique chunk(s) across {len(subtasks_data)} subtask(s) | Coverage: {coverage_ratio:.0%}"
@@ -587,10 +639,7 @@ class CollaborativeAgentNodes:
         """Agent 7: Coordinates multi-agent collaboration, state integrity, and final payload."""
         t0 = time.perf_counter()
         recommendation = state.get("verification_recommendation", "proceed")
-        is_insufficient = (
-            state.get("is_insufficient_evidence", False)
-            or recommendation != "proceed"
-        )
+        is_insufficient = state.get("is_insufficient_evidence", False) or recommendation != "proceed"
         if is_insufficient:
             status = ChatResponseStatus.INSUFFICIENT_EVIDENCE
             supervisor_decision = "terminated_insufficient"

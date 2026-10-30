@@ -510,5 +510,3 @@ async def list_repair_jobs(
         for j in jobs
     ]
     return ApiResponse(success=True, data=items, meta=_create_meta(request))
-
-

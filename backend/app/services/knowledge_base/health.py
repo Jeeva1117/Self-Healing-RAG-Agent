@@ -117,9 +117,7 @@ class KnowledgeBaseHealthEngine:
 
         # 3. Chunk and Embedding Invariants
         chunks_stmt = (
-            select(DocumentChunk)
-            .where(DocumentChunk.document_id == doc.id)
-            .order_by(DocumentChunk.chunk_index.asc())
+            select(DocumentChunk).where(DocumentChunk.document_id == doc.id).order_by(DocumentChunk.chunk_index.asc())
         )
         chunks_res = await self.session.execute(chunks_stmt)
         chunks = list(chunks_res.scalars().all())
@@ -266,7 +264,9 @@ class KnowledgeBaseHealthEngine:
             chunk_count=len(chunks),
             active_version=active_version.version_number if active_version else 1,
             embedding_status=emb_status,
-            last_indexed_at=doc.updated_at if doc.status in (DocumentStatus.READY.value, DocumentStatus.READY) else None,
+            last_indexed_at=doc.updated_at
+            if doc.status in (DocumentStatus.READY.value, DocumentStatus.READY)
+            else None,
         )
 
     async def check_kb_health(self, kb_id: UUID, user_id: UUID) -> KnowledgeBaseHealthReport:
@@ -315,12 +315,9 @@ class KnowledgeBaseHealthEngine:
         # Any chunk where document_id is not in docs
         doc_ids = [d.id for d in docs]
         if doc_ids:
-            orphans_stmt = (
-                select(func.count(DocumentChunk.id))
-                .where(
-                    DocumentChunk.document_id.not_in(doc_ids),
-                    DocumentChunk.document_version_id.is_(None),
-                )
+            orphans_stmt = select(func.count(DocumentChunk.id)).where(
+                DocumentChunk.document_id.not_in(doc_ids),
+                DocumentChunk.document_version_id.is_(None),
             )
             # Safe boundary check
             try:
@@ -354,4 +351,3 @@ class KnowledgeBaseHealthEngine:
         )
 
     check_knowledge_base_health = check_kb_health
-

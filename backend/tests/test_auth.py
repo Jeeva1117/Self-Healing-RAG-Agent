@@ -593,4 +593,3 @@ async def test_auth_config_endpoint(client: AsyncClient, monkeypatch: pytest.Mon
     res_enabled = await client.get("/api/v1/auth/config")
     assert res_enabled.status_code == 200
     assert res_enabled.json()["data"]["demo_login_enabled"] is True
-

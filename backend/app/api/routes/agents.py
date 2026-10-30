@@ -194,13 +194,41 @@ async def get_agent_graph_topology(
             },
         ],
         "conditional_edges": [
-            {"from": "query_analysis", "condition": "is_ambiguous", "branches": ["grounded_generation", "scope_authorization"]},
-            {"from": "scope_authorization", "condition": "is_authorized", "branches": ["finalization", "retrieval_strategy"]},
-            {"from": "evidence_assessment", "condition": "evidence_status", "branches": ["bounded_retry", "finalization", "grounded_generation"]},
-            {"from": "bounded_retry", "condition": "recovery_action", "branches": ["finalization", "grounded_generation", "retrieval_strategy"]},
-            {"from": "grounded_generation", "condition": "execution_status", "branches": ["finalization", "bounded_retry", "citation_validation"]},
-            {"from": "citation_validation", "condition": "citation_validation_passed", "branches": ["bounded_retry", "answer_verification"]},
-            {"from": "answer_verification", "condition": "verification_passed", "branches": ["bounded_retry", "finalization"]},
+            {
+                "from": "query_analysis",
+                "condition": "is_ambiguous",
+                "branches": ["grounded_generation", "scope_authorization"],
+            },
+            {
+                "from": "scope_authorization",
+                "condition": "is_authorized",
+                "branches": ["finalization", "retrieval_strategy"],
+            },
+            {
+                "from": "evidence_assessment",
+                "condition": "evidence_status",
+                "branches": ["bounded_retry", "finalization", "grounded_generation"],
+            },
+            {
+                "from": "bounded_retry",
+                "condition": "recovery_action",
+                "branches": ["finalization", "grounded_generation", "retrieval_strategy"],
+            },
+            {
+                "from": "grounded_generation",
+                "condition": "execution_status",
+                "branches": ["finalization", "bounded_retry", "citation_validation"],
+            },
+            {
+                "from": "citation_validation",
+                "condition": "citation_validation_passed",
+                "branches": ["bounded_retry", "answer_verification"],
+            },
+            {
+                "from": "answer_verification",
+                "condition": "verification_passed",
+                "branches": ["bounded_retry", "finalization"],
+            },
         ],
     }
 

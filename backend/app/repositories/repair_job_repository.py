@@ -19,9 +19,7 @@ class RepairJobRepository(BaseRepository[KnowledgeBaseRepairJob]):
     def __init__(self, session: AsyncSession):
         super().__init__(KnowledgeBaseRepairJob, session)
 
-    async def get_by_id_and_owner(
-        self, job_id: UUID | str, user_id: UUID | str
-    ) -> KnowledgeBaseRepairJob | None:
+    async def get_by_id_and_owner(self, job_id: UUID | str, user_id: UUID | str) -> KnowledgeBaseRepairJob | None:
         """Retrieves a specific repair job ensuring user ownership."""
         j_uuid = _as_uuid(job_id)
         u_uuid = _as_uuid(user_id)
@@ -32,9 +30,7 @@ class RepairJobRepository(BaseRepository[KnowledgeBaseRepairJob]):
         res = await self.session.execute(stmt)
         return res.scalars().first()
 
-    async def get_active_job_for_document(
-        self, document_id: UUID | str
-    ) -> KnowledgeBaseRepairJob | None:
+    async def get_active_job_for_document(self, document_id: UUID | str) -> KnowledgeBaseRepairJob | None:
         """Returns active repair job running on a document to prevent concurrent races."""
         d_uuid = _as_uuid(document_id)
         stmt = select(KnowledgeBaseRepairJob).where(

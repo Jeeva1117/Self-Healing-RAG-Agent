@@ -70,4 +70,3 @@ class ParserFactory:
             message=f"Unsupported document format '{ext or content_type}'. Supported formats: {formats_str}",
             status_code=400,
         )
-

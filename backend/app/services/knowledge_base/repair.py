@@ -57,9 +57,7 @@ class KnowledgeBaseRepairEngine:
         self.chunk_repo = ChunkRepository(session)
         self.repair_repo = RepairJobRepository(session)
         self.health_engine = KnowledgeBaseHealthEngine(session)
-        self.version_engine = KnowledgeBaseVersioningEngine(
-            session, storage_provider, embedding_provider
-        )
+        self.version_engine = KnowledgeBaseVersioningEngine(session, storage_provider, embedding_provider)
         self.storage = storage_provider or LocalStorageProvider()
         self.embeddings = embedding_provider or get_embedding_provider()
         self.chunker = chunker or DocumentChunker()

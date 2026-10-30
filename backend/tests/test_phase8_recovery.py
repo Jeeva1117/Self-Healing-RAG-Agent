@@ -162,10 +162,9 @@ async def phase8_env(db_session: AsyncSession, user_a: User, user_b: User):
 # 1. Normal query succeeds without recovery
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_normal_query_succeeds_without_recovery(
-    db_session: AsyncSession, user_a: User, phase8_env
-):
+async def test_normal_query_succeeds_without_recovery(db_session: AsyncSession, user_a: User, phase8_env):
     """Test 1: Normal evidence-supported question completes on attempt 0 with ANSWERED status."""
     kb_a = phase8_env["kb_a"]
     llm = PredictableMockLLM(["Python operators include arithmetic and comparison operators [1]."])
@@ -192,6 +191,7 @@ async def test_normal_query_succeeds_without_recovery(
 # ======================================================================
 # 2. Relevant answer and valid citations pass verification
 # ======================================================================
+
 
 @pytest.mark.asyncio
 async def test_relevant_answer_and_valid_citations_pass_verification(
@@ -222,10 +222,9 @@ async def test_relevant_answer_and_valid_citations_pass_verification(
 # 3. Empty retrieval triggers correct bounded recovery path
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_empty_retrieval_triggers_bounded_recovery_path(
-    db_session: AsyncSession, user_a: User, phase8_env
-):
+async def test_empty_retrieval_triggers_bounded_recovery_path(db_session: AsyncSession, user_a: User, phase8_env):
     """Test 3: Query retrieving zero chunks triggers bounded recovery loop."""
     kb_a = phase8_env["kb_a"]
     llm = PredictableMockLLM()
@@ -250,6 +249,7 @@ async def test_empty_retrieval_triggers_bounded_recovery_path(
 # ======================================================================
 # 4. Low-relevance retrieval triggers query rewrite strategy
 # ======================================================================
+
 
 @pytest.mark.asyncio
 async def test_low_relevance_retrieval_triggers_alternate_strategy():
@@ -278,10 +278,9 @@ async def test_low_relevance_retrieval_triggers_alternate_strategy():
 # 5. Persistent insufficient evidence ends safely
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_persistent_insufficient_evidence_ends_safely(
-    db_session: AsyncSession, user_a: User, phase8_env
-):
+async def test_persistent_insufficient_evidence_ends_safely(db_session: AsyncSession, user_a: User, phase8_env):
     """Test 5: Persistent insufficient evidence terminates with truthful response and no fake citations."""
     kb_a = phase8_env["kb_a"]
     llm = PredictableMockLLM()
@@ -305,6 +304,7 @@ async def test_persistent_insufficient_evidence_ends_safely(
 # ======================================================================
 # 6. Transient database or provider error follows retry policy
 # ======================================================================
+
 
 @pytest.mark.asyncio
 async def test_transient_database_or_provider_error_follows_retry_policy():
@@ -340,10 +340,9 @@ async def test_transient_database_or_provider_error_follows_retry_policy():
 # 7. Permanent authorization failure is never retried
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_permanent_authorization_failure_never_retried(
-    db_session: AsyncSession, user_b: User, phase8_env
-):
+async def test_permanent_authorization_failure_never_retried(db_session: AsyncSession, user_b: User, phase8_env):
     """Test 7: Access to unauthorized KB terminates immediately without retry."""
     kb_a = phase8_env["kb_a"]
     llm = PredictableMockLLM()
@@ -365,6 +364,7 @@ async def test_permanent_authorization_failure_never_retried(
 # ======================================================================
 # 8. Invalid citation IDs are rejected/repaired
 # ======================================================================
+
 
 @pytest.mark.asyncio
 async def test_invalid_citation_ids_are_rejected():
@@ -396,6 +396,7 @@ async def test_invalid_citation_ids_are_rejected():
 # 9. Unsupported answers are not marked successful
 # ======================================================================
 
+
 @pytest.mark.asyncio
 async def test_unsupported_answers_fail_verification():
     """Test 9: Answers containing claims totally unsupported by evidence fail verification."""
@@ -421,18 +422,19 @@ async def test_unsupported_answers_fail_verification():
 # 10. Recovery succeeds after a recoverable failure
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_recovery_succeeds_after_recoverable_failure(
-    db_session: AsyncSession, user_a: User, phase8_env
-):
+async def test_recovery_succeeds_after_recoverable_failure(db_session: AsyncSession, user_a: User, phase8_env):
     """Test 10: Initial generation failure recovers on feedback retry and marks status RECOVERED."""
     kb_a = phase8_env["kb_a"]
     # 1st attempt: ungrounded answer without citations (fails verification)
     # 2nd attempt: grounded answer with citation [1] (passes verification)
-    llm = PredictableMockLLM([
-        "Python operators are great features of the language.",  # Missing citations -> fails verifier
-        "Python operators include arithmetic (+, -) and comparison (==, !=) [1].",  # Passes verifier
-    ])
+    llm = PredictableMockLLM(
+        [
+            "Python operators are great features of the language.",  # Missing citations -> fails verifier
+            "Python operators include arithmetic (+, -) and comparison (==, !=) [1].",  # Passes verifier
+        ]
+    )
     orchestrator = AgenticRAGOrchestrator(session=db_session, llm_provider=llm)
 
     req = ChatRequest(
@@ -456,10 +458,9 @@ async def test_recovery_succeeds_after_recoverable_failure(
 # 11. Recovery fails safely after exhausting retry budget
 # ======================================================================
 
+
 @pytest.mark.asyncio
-async def test_recovery_fails_safely_after_exhausting_retry_budget(
-    db_session: AsyncSession, user_a: User, phase8_env
-):
+async def test_recovery_fails_safely_after_exhausting_retry_budget(db_session: AsyncSession, user_a: User, phase8_env):
     """Test 11: When retry budget is exhausted without evidence, pipeline terminates safely."""
     kb_a = phase8_env["kb_a"]
     llm = PredictableMockLLM()
@@ -483,6 +484,7 @@ async def test_recovery_fails_safely_after_exhausting_retry_budget(
 # ======================================================================
 # 12. Repeated identical recovery actions do not create infinite loops
 # ======================================================================
+
 
 @pytest.mark.asyncio
 async def test_repeated_identical_recovery_actions_do_not_create_infinite_loops():
@@ -517,6 +519,7 @@ async def test_repeated_identical_recovery_actions_do_not_create_infinite_loops(
 # 13. Workflow timeout terminates execution
 # ======================================================================
 
+
 @pytest.mark.asyncio
 async def test_workflow_timeout_terminates_execution():
     """Test 13: Past deadline immediately triggers non-recoverable termination."""
@@ -543,6 +546,7 @@ async def test_workflow_timeout_terminates_execution():
 # 14. A recovery attempt cannot access another user's knowledge base
 # ======================================================================
 
+
 @pytest.mark.asyncio
 async def test_recovery_attempt_cannot_access_another_user_knowledge_base(
     db_session: AsyncSession, user_a: User, user_b: User, phase8_env
@@ -568,6 +572,7 @@ async def test_recovery_attempt_cannot_access_another_user_knowledge_base(
 # 15. Malformed model output is handled safely
 # ======================================================================
 
+
 @pytest.mark.asyncio
 async def test_malformed_model_output_handled_safely():
     """Test 15: Empty or malformed LLM outputs are classified as GENERATION_FAILURE."""
@@ -589,12 +594,11 @@ async def test_malformed_model_output_handled_safely():
 # 16. Provider rate limits do not cause unlimited retries
 # ======================================================================
 
+
 @pytest.mark.asyncio
 async def test_provider_rate_limits_do_not_cause_unlimited_retries():
     """Test 16: 429 rate limit errors follow bounded retry policy and do not exceed budget."""
-    diag = FailureClassifier.classify_generation(
-        error=Exception("429 Too Many Requests: TPM rate limit exceeded")
-    )
+    diag = FailureClassifier.classify_generation(error=Exception("429 Too Many Requests: TPM rate limit exceeded"))
     assert diag.category == FailureCategory.GENERATION_FAILURE
     assert diag.is_recoverable is True
     assert diag.suggested_action == RecoveryAction.RETRY_TRANSIENT
@@ -616,6 +620,7 @@ async def test_provider_rate_limits_do_not_cause_unlimited_retries():
 # ======================================================================
 # 17-20. Unit Tests for Classifier, Policy, Rewriter, and Verifier Invariants
 # ======================================================================
+
 
 def test_query_rewriter_intent_preservation():
     """Validates QueryRewriter strips noise and preserves core terms."""

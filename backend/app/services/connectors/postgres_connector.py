@@ -22,8 +22,18 @@ SQL_IDENTIFIER_PATTERN = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 
 # Sensitive columns excluded by default from indexing
 EXCLUDED_COLUMN_PATTERNS = {
-    "password", "passwd", "pwd", "hash", "secret", "token", "auth_token",
-    "access_token", "private_key", "ssn", "credit_card", "cvv",
+    "password",
+    "passwd",
+    "pwd",
+    "hash",
+    "secret",
+    "token",
+    "auth_token",
+    "access_token",
+    "private_key",
+    "ssn",
+    "credit_card",
+    "cvv",
 }
 
 
@@ -201,7 +211,9 @@ class PostgreSQLConnector(BaseConnector):
                     batch_size = 5
                     for b_start in range(0, len(data_rows), batch_size):
                         batch = data_rows[b_start : b_start + batch_size]
-                        text_blocks = [f"Table: {self.schema}.{table_name} (Rows {b_start + 1} to {min(b_start + batch_size, len(data_rows))})"]
+                        text_blocks = [
+                            f"Table: {self.schema}.{table_name} (Rows {b_start + 1} to {min(b_start + batch_size, len(data_rows))})"
+                        ]
 
                         for r_idx, row in enumerate(batch, start=b_start + 1):
                             row_fields = [f"Row #{r_idx}:"]

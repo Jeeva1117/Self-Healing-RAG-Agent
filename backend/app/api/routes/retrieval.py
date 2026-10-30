@@ -79,4 +79,3 @@ async def search_alias_endpoint(
     session: Annotated[AsyncSession, Depends(get_db_session)],
 ) -> ApiResponse[RetrievalResponse]:
     return await search_documents(search_request, request, current_user, session)
-

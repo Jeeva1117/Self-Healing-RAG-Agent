@@ -346,7 +346,6 @@ class IngestionService:
         file_bytes = await self.storage.load(doc.storage_key)
         return file_bytes, doc.original_filename, doc.content_type
 
-
     async def get_document(self, document_id: UUID, user_id: UUID) -> DocumentResponse:
         """Retrieves single document enforcing ownership."""
         doc = await self.doc_repo.get_by_id_and_owner(document_id, user_id)
@@ -483,7 +482,6 @@ class IngestionService:
         await self.session.flush()
         await self.session.commit()
         logger.info("Deleted document %s and cleaned up associated storage", document_id)
-
 
     async def get_document_chunks(
         self, document_id: UUID, user_id: UUID, offset: int = 0, limit: int = 50
