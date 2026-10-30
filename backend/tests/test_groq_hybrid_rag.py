@@ -416,6 +416,42 @@ def test_secret_redaction_utility():
     assert "Bearer abcdef1234567890" not in redacted_bearer
 
 
+@pytest.mark.asyncio
+async def test_groq_stream_error_decodes_bytes():
+    """Test that stream errors with raw bytes decode cleanly and redact secrets without TypeError."""
+    from unittest.mock import AsyncMock, MagicMock, patch
+
+    from app.core.exceptions import AppError
+    from app.domain.interfaces.llm import LLMMessage
+
+    provider = GroqProvider(api_key="test-key")
+    fake_stream_resp = MagicMock()
+    fake_stream_resp.status_code = 429
+    fake_stream_resp.aread = AsyncMock(
+        return_value=b'{"error": "rate_limit_exceeded for gsk_1234567890abcdef123456"}'
+    )
+
+    mock_client = MagicMock()
+    mock_client.__aenter__.return_value = mock_client
+    mock_client.__aexit__.return_value = None
+    mock_stream_context = MagicMock()
+    mock_stream_context.__aenter__.return_value = fake_stream_resp
+    mock_stream_context.__aexit__.return_value = None
+    mock_client.stream.return_value = mock_stream_context
+
+    with patch("httpx.AsyncClient", return_value=mock_client):
+        with pytest.raises(AppError) as exc_info:
+            async for _ in provider.generate_stream(
+                messages=[LLMMessage(role="user", content="Hello")]
+            ):
+                pass
+
+        assert exc_info.value.code == "LLM_STREAM_ERROR"
+        assert exc_info.value.status_code == 502
+        assert "gsk_1234567890abcdef123456" not in exc_info.value.message
+        assert "***REDACTED_SECRET***" in exc_info.value.message
+
+
 # ==============================================================================
 # 11. Opt-In Live Groq Smoke Test
 # ==============================================================================

@@ -40,22 +40,24 @@ class GroqProvider(LLMProviderInterface):
         if api_key is not None:
             self.api_key = api_key
         else:
-            self.api_key = (
+            self.api_key = str(
                 os.getenv("GROQ_API_KEY")
                 or getattr(settings, "GROQ_API_KEY", "")
                 or getattr(settings, "LLM_API_KEY", "")
+                or ""
             )
         if model is not None:
             self.model = model
         else:
-            self.model = (
+            self.model = str(
                 os.getenv("GROQ_MODEL")
                 or getattr(settings, "GROQ_MODEL", "llama-3.3-70b-versatile")
+                or "llama-3.3-70b-versatile"
             )
         if base_url is not None:
             self.base_url = base_url.rstrip("/")
         else:
-            self.base_url = (
+            self.base_url = str(
                 os.getenv("GROQ_BASE_URL")
                 or getattr(settings, "GROQ_BASE_URL", None)
                 or getattr(settings, "LLM_BASE_URL", None)
@@ -249,7 +251,9 @@ class GroqProvider(LLMProviderInterface):
                     json=payload,
                 ) as response:
                     if response.status_code != 200:
-                        err_text = redact_secret(await response.aread())
+                        raw_bytes = await response.aread()
+                        decoded_err = raw_bytes.decode("utf-8", errors="replace")
+                        err_text = redact_secret(decoded_err)
                         raise AppError(
                             code="LLM_STREAM_ERROR",
                             message=f"Groq stream error (HTTP {response.status_code}): {err_text[:200]}",
